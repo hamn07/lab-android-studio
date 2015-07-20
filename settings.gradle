@@ -1,2 +1,2 @@
-include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io'
+include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network'
 include ':RelativeLayout'

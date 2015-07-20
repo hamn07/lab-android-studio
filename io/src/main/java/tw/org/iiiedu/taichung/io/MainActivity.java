@@ -1,6 +1,7 @@
 package tw.org.iiiedu.taichung.io;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,17 +12,21 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.InputStreamReader;
 
 public class MainActivity extends ActionBarActivity {
 
     private TextView tv;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
+    private File sdroot;
+    private File dir_iotest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +39,13 @@ public class MainActivity extends ActionBarActivity {
         editor = sp.edit();
 
 
-        editor.putString("name","Henry");
-        editor.putBoolean("show",true);
+        editor.putString("name", "Henry");
+        editor.putBoolean("show", true);
         editor.commit();
 
 
-
+//        saveToSdCare();
+        saveToSdCareAlt();
 
     }
 
@@ -63,18 +69,98 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
     }
-    public void doIoSdCard(View v){
-        Log.i("henry", String.valueOf(Environment.getExternalStorageState()));
+    public void saveToSdCare(){
+        sdroot = Environment.getExternalStorageDirectory();
+        Log.i("henry", sdroot.getAbsolutePath());
 
-        File sdroot = Environment.getExternalStorageDirectory();
-        Log.i("henry",sdroot.getAbsolutePath());
-
-        tv.setText(sdroot.getAbsolutePath());
-
-        File dir = new File(sdroot,"dir");
-        if (!dir.exists()){
-            dir.mkdir();
+        dir_iotest = new File(sdroot,"iotest");
+        if (!dir_iotest.exists()){
+            dir_iotest.mkdirs();
         }
+
+        File file1 = new File(dir_iotest,"henry.txt");
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file1);
+            fos.write("Hello".getBytes());
+            fos.flush();
+            fos.close();
+            Toast.makeText(this,"save ok",Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void doIoSdCard(View v){
+        File file1 = new File(sdroot,"iotest/henry.txt");
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file1);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader br = new BufferedReader(isr);
+        String line = null;
+        try {
+            line = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this,line,Toast.LENGTH_SHORT).show();
+    }
+    public void saveToSdCareAlt(){
+        sdroot = Environment.getExternalStorageDirectory();
+
+        dir_iotest = new File(sdroot,"/Android/data/" + getPackageName());
+        if (!dir_iotest.exists()){
+            dir_iotest.mkdirs();
+        }
+
+        File file1 = new File(dir_iotest,"henry.txt");
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file1);
+            fos.write("Hello alt".getBytes());
+            fos.flush();
+            fos.close();
+            Toast.makeText(this,"save ok alt",Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void doIoSdCardAlt(View v){
+        File file1 = new File(dir_iotest, "henry.txt" );
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(file1);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader br = new BufferedReader(isr);
+        String line = null;
+        try {
+            line = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this,line,Toast.LENGTH_SHORT).show();
+    }
+    public void doRes (View v){
+        Resources res = getResources();
+        BufferedReader br = new BufferedReader(new InputStreamReader(res.openRawResource(R.raw.game)));
+
+        String line = null;
+        try {
+            line = br.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this,line,Toast.LENGTH_SHORT).show();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="main"><source path="D:\dvp\workspace\AndroidStudioProjects\lab-android-studio\RelativeLayout\src\androidTest\res"/><source path="D:\dvp\workspace\AndroidStudioProjects\lab-android-studio\RelativeLayout\build\generated\res\rs\androidTest\debug"/><source path="D:\dvp\workspace\AndroidStudioProjects\lab-android-studio\RelativeLayout\build\generated\res\generated\androidTest\debug"/></dataSet><mergedItems/></merger>
+=======
+<merger version="3"><dataSet config="main"><source path="/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/RelativeLayout/src/androidTest/res"/><source path="/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/RelativeLayout/build/generated/res/rs/androidTest/debug"/><source path="/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/RelativeLayout/build/generated/res/generated/androidTest/debug"/></dataSet><mergedItems/></merger>
+>>>>>>> 983b5ac153420d1b68aafadaf2553719ec2f1d85

@@ -5,29 +5,24 @@
     >
 
     <Button
-        android:text="Save to SharedPreferences"
-        android:onClick="doIo"
+        android:text="create"
+        android:onClick="create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
-        android:text="Save to File"
-        android:onClick="doIo2"
+        android:text="read"
+        android:onClick="read"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:text="SD Card"
-        android:onClick="doIoSdCard"
+        android:text="update"
+        android:onClick="update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:text="SD Card alternative"
-        android:onClick="doIoSdCardAlt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:text="Read res raw data"
-        android:onClick="doRes"
+        android:text="delete"
+        android:onClick="delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
