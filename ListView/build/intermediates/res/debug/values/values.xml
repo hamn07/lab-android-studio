@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/ListView/src/main/res/values/strings.xml -->
+    <!-- From: file:/D:/dvp/workspace/AndroidStudioProjects/lab-android-studio/ListView/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">ListView</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_page_henry">PageHenryActivity</string>
     <string name="title_activity_page_mary">PageMaryActivity</string>
-    <!-- From: file:/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/ListView/src/main/res/values/styles.xml -->
+    <!-- From: file:/D:/dvp/workspace/AndroidStudioProjects/lab-android-studio/ListView/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
