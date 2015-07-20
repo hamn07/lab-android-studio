@@ -5,34 +5,33 @@
     >
 
     <Button
-        android:text="Save to SharedPreferences"
-        android:onClick="doIo"
+        android:text="tcp"
+        android:onClick="tcp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <Button
-        android:text="Save to File"
-        android:onClick="doIo2"
+        android:text="udp"
+        android:onClick="udp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:text="SD Card"
-        android:onClick="doIoSdCard"
+        android:text="http1"
+        android:onClick="http1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:text="SD Card alternative"
-        android:onClick="doIoSdCardAlt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:text="Read res raw data"
-        android:onClick="doRes"
+        android:text="http2"
+        android:onClick="http2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv"
         android:text="@string/hello_world"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
