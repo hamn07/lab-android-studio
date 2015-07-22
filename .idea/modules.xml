@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/ListView/ListView.iml" filepath="$PROJECT_DIR$/ListView/ListView.iml" />
       <module fileurl="file://$PROJECT_DIR$/RelativeLayout/RelativeLayout.iml" filepath="$PROJECT_DIR$/RelativeLayout/RelativeLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/io/io.iml" filepath="$PROJECT_DIR$/io/io.iml" />
+      <module fileurl="file://$PROJECT_DIR$/io_db/io_db.iml" filepath="$PROJECT_DIR$/io_db/io_db.iml" />
       <module fileurl="file://$PROJECT_DIR$/lab-android-studio.iml" filepath="$PROJECT_DIR$/lab-android-studio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
       <module fileurl="file://$PROJECT_DIR$/pichannelur/pichannelur.iml" filepath="$PROJECT_DIR$/pichannelur/pichannelur.iml" />
       <module fileurl="file://$PROJECT_DIR$/signature/signature.iml" filepath="$PROJECT_DIR$/signature/signature.iml" />
       <module fileurl="file://$PROJECT_DIR$/stopwatch/stopwatch.iml" filepath="$PROJECT_DIR$/stopwatch/stopwatch.iml" />

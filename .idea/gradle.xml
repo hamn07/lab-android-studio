@@ -12,6 +12,8 @@
             <option value="$PROJECT_DIR$/ListView" />
             <option value="$PROJECT_DIR$/RelativeLayout" />
             <option value="$PROJECT_DIR$/io" />
+            <option value="$PROJECT_DIR$/io_db" />
+            <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/pichannelur" />
             <option value="$PROJECT_DIR$/signature" />
             <option value="$PROJECT_DIR$/stopwatch" />
