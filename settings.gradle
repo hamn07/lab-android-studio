@@ -1,2 +1,3 @@
-include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network'
+include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network', ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl'
 include ':RelativeLayout'
+include ':myMapTest'

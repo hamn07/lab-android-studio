@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<merger version="3"><dataSet config="main"><source path="D:\dvp\workspace\AndroidStudioProjects\lab-android-studio\RelativeLayout\src\androidTest\assets"/></dataSet></merger>
-=======
 <merger version="3"><dataSet config="main"><source path="/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/RelativeLayout/src/androidTest/assets"/></dataSet></merger>
->>>>>>> 983b5ac153420d1b68aafadaf2553719ec2f1d85
