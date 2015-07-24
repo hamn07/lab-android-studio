@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/io" />
             <option value="$PROJECT_DIR$/io_db" />
             <option value="$PROJECT_DIR$/io_mysql" />
+            <option value="$PROJECT_DIR$/music" />
             <option value="$PROJECT_DIR$/myMapTest" />
             <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/pichannelloadimagefromurl" />
@@ -22,6 +23,7 @@
             <option value="$PROJECT_DIR$/signature" />
             <option value="$PROJECT_DIR$/stopwatch" />
             <option value="$PROJECT_DIR$/timertask" />
+            <option value="$PROJECT_DIR$/volley" />
             <option value="$PROJECT_DIR$/webview" />
             <option value="$PROJECT_DIR$/webviewMap" />
           </set>

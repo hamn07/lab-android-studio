@@ -2,7 +2,10 @@ package tw.org.iiiedu.taichung.webviewmap;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -23,6 +26,8 @@ public class MainActivity extends ActionBarActivity {
     private WebView webview;
     private TextView tv;
     private MyHandler handler;
+    private MapHandler map_handler;
+    private MyReciever reciever;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,12 @@ public class MainActivity extends ActionBarActivity {
         webview = (WebView) findViewById(R.id.webview);
         tv = (TextView) findViewById(R.id.tv);
         handler = new MyHandler();
+        map_handler = ((MyApplication) getApplication()).getHandler();
+
+
+        reciever = new MyReciever();
+//        IntentFilter filter = new IntentFilter("henrymap");
+        registerReceiver(reciever,new IntentFilter("henrymap"));
 
         initWebView();
     }
@@ -47,6 +58,12 @@ public class MainActivity extends ActionBarActivity {
         webview.loadUrl("file:///android_asset/hello.html");
 
 
+    }
+
+    @Override
+    public void finish() {
+        unregisterReceiver(reciever);
+        super.finish();
     }
 
     public void test2(View v){
@@ -99,9 +116,16 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private class MyReciever extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            double lat = intent.getDoubleExtra("lat",0);
+            double lng = intent.getDoubleExtra("lng",0);
+            Log.i("henry","onReceive");
+            webview.loadUrl("javascript:goto("+lat+","+lng+")");
+        }
 
-
-
+    }
 
 
 

@@ -13,6 +13,7 @@ public class MyService extends Service {
 
     private LocationManager lmgr;
     private MyLocationListener listener;
+    private MapHandler map_handler;
 
     public MyService() {
     }
@@ -40,6 +41,8 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
 //        Log.i("henry","onCreate");
+        map_handler = ((MyApplication) getApplication()).getHandler();
+
         listener = new MyLocationListener();
         lmgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         lmgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
@@ -50,7 +53,12 @@ public class MyService extends Service {
         public void onLocationChanged(Location location) {
             double lat = location.getLatitude();
             double lng = location.getLongitude();
-            Log.i("henry",lat+","+lng);
+//            Log.i("henry",lat+","+lng);
+//            map_handler.sendEmptyMessage(123);
+            Intent it = new Intent("henrymap");
+            it.putExtra("lat",lat);
+            it.putExtra("lng",lng);
+            sendBroadcast(it);
         }
 
         @Override
