@@ -4,15 +4,9 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,11 +22,9 @@ import java.net.URL;
 public class MainActivity extends Activity {
 
     private ImageView imgv;
-//    private String sUrl = "https://lh5.googleusercontent.com/jaJyrqFyEMSpe7hfm2Qc5_iELcWf5TYJ_aMZowxJGYM3eLcNl87vBfyaRuFbOSj_aONwJwweD7ql8GbDUW79w-rtXZ_z8NTk2cKakXttRA2MWtPYfxvTZb9J";
-    private String sUrl = "http://10.0.3.2/api/user/hamn07?apiKey=key1&max-result=10";
+    private String sUrl = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
     private Drawable drawable;
     private LoadImageHandler handler;
-    private LinearLayout ll;
 
 
     @Override
@@ -46,20 +38,6 @@ public class MainActivity extends Activity {
 
         new LoadImageThread().start();
 
-
-        ll = (LinearLayout) findViewById(R.id.ll);
-        ll.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                Log.i("henry","click on LinearLayout");
-                return false;
-            }
-        });
-    }
-
-    public void click(View v){
-        Log.i("henry","click on TextView");
     }
 
     private class LoadImageThread extends Thread {
