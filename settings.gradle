@@ -1,3 +1,2 @@
-include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network', ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl', ':volley', ':music'
+include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network', ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl', ':volley', ':music', ':pichanellvr.test.imageswitcher'
 include ':RelativeLayout'
-include ':myMapTest'
