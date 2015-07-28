@@ -1,2 +1,2 @@
-include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network', ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl', ':volley', ':music', ':pichanellvr.test.imageswitcher'
+include ':pichannelur', ':timertask', ':stopwatch', ':signature', ':ListView', ':io', ':io_db', ':network', ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl', ':volley', ':music', ':pichanellvr.test.imageswitcher', ':pichannelvr.test.main', ':picahnnelvr.test.menu', ':pichannelvr'
 include ':RelativeLayout'

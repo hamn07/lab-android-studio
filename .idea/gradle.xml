@@ -17,9 +17,12 @@
             <option value="$PROJECT_DIR$/io_mysql" />
             <option value="$PROJECT_DIR$/music" />
             <option value="$PROJECT_DIR$/network" />
+            <option value="$PROJECT_DIR$/picahnnelvr.test.menu" />
             <option value="$PROJECT_DIR$/pichanellvr.test.imageswitcher" />
             <option value="$PROJECT_DIR$/pichannelloadimagefromurl" />
             <option value="$PROJECT_DIR$/pichannelur" />
+            <option value="$PROJECT_DIR$/pichannelvr" />
+            <option value="$PROJECT_DIR$/pichannelvr.test.main" />
             <option value="$PROJECT_DIR$/signature" />
             <option value="$PROJECT_DIR$/stopwatch" />
             <option value="$PROJECT_DIR$/timertask" />

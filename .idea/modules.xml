@@ -13,10 +13,13 @@
       <module fileurl="file://$PROJECT_DIR$/music/music.iml" filepath="$PROJECT_DIR$/music/music.iml" />
       <module fileurl="file://$PROJECT_DIR$/music/music.iml" filepath="$PROJECT_DIR$/music/music.iml" />
       <module fileurl="file://$PROJECT_DIR$/network/network.iml" filepath="$PROJECT_DIR$/network/network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/picahnnelvr.test.menu/picahnnelvr.test.menu.iml" filepath="$PROJECT_DIR$/picahnnelvr.test.menu/picahnnelvr.test.menu.iml" />
       <module fileurl="file://$PROJECT_DIR$/pichanellvr.test.imageswitcher/pichanellvr.test.imageswitcher.iml" filepath="$PROJECT_DIR$/pichanellvr.test.imageswitcher/pichanellvr.test.imageswitcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/pichannelloadimagefromurl/pichannelloadimagefromurl.iml" filepath="$PROJECT_DIR$/pichannelloadimagefromurl/pichannelloadimagefromurl.iml" />
       <module fileurl="file://$PROJECT_DIR$/pichannelloadimagefromurl/pichannelloadimagefromurl.iml" filepath="$PROJECT_DIR$/pichannelloadimagefromurl/pichannelloadimagefromurl.iml" />
       <module fileurl="file://$PROJECT_DIR$/pichannelur/pichannelur.iml" filepath="$PROJECT_DIR$/pichannelur/pichannelur.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pichannelvr/pichannelvr.iml" filepath="$PROJECT_DIR$/pichannelvr/pichannelvr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pichannelvr.test.main/pichannelvr.test.main.iml" filepath="$PROJECT_DIR$/pichannelvr.test.main/pichannelvr.test.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/signature/signature.iml" filepath="$PROJECT_DIR$/signature/signature.iml" />
       <module fileurl="file://$PROJECT_DIR$/stopwatch/stopwatch.iml" filepath="$PROJECT_DIR$/stopwatch/stopwatch.iml" />
       <module fileurl="file://$PROJECT_DIR$/timertask/timertask.iml" filepath="$PROJECT_DIR$/timertask/timertask.iml" />
