@@ -172,7 +172,7 @@ public class MainActivity extends Activity implements ViewSwitcher.ViewFactory{
     }
 
 
-cd
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

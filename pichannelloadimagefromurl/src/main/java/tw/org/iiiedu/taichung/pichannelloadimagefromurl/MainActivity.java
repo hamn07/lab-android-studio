@@ -1,6 +1,7 @@
 package tw.org.iiiedu.taichung.pichannelloadimagefromurl;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
@@ -65,6 +66,8 @@ public class MainActivity extends Activity {
                         Log.i("henry", "json.image_src : " + json.getString("image_src"));
 
                         InputStream is_img = (InputStream) new URL(json.getString("image_src").replace("localhost","10.0.3.2")).getContent();
+                        Intent it = new Intent();
+
                         drawable = Drawable.createFromStream(is_img, "src");
                         handler.sendEmptyMessage(0);
                     }
