@@ -12,6 +12,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/ListView" />
             <option value="$PROJECT_DIR$/RelativeLayout" />
+            <option value="$PROJECT_DIR$/asynctask" />
+            <option value="$PROJECT_DIR$/bgservice" />
+            <option value="$PROJECT_DIR$/imageSwitcher" />
             <option value="$PROJECT_DIR$/io" />
             <option value="$PROJECT_DIR$/io_db" />
             <option value="$PROJECT_DIR$/io_mysql" />
@@ -24,7 +27,9 @@
             <option value="$PROJECT_DIR$/pichannelvr" />
             <option value="$PROJECT_DIR$/pichannelvr.test.main" />
             <option value="$PROJECT_DIR$/signature" />
+            <option value="$PROJECT_DIR$/sound" />
             <option value="$PROJECT_DIR$/stopwatch" />
+            <option value="$PROJECT_DIR$/tablelayout" />
             <option value="$PROJECT_DIR$/timertask" />
             <option value="$PROJECT_DIR$/volley" />
             <option value="$PROJECT_DIR$/webview" />

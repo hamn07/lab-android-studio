@@ -171,6 +171,12 @@ public class MainActivity extends Activity implements ViewSwitcher.ViewFactory{
         }
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 2f6bd700778281d2f793e1370a7d01e35931f266
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

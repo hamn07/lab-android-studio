@@ -17,6 +17,7 @@ public class MyService extends Service {
     private MediaPlayer mediaPlayer;
     private Timer timer;
     public MyService() {
+
     }
 
     @Override

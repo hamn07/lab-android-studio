@@ -5,6 +5,11 @@
       <module fileurl="file://$PROJECT_DIR$/EmbeddAndroidTranningClass.iml" filepath="$PROJECT_DIR$/EmbeddAndroidTranningClass.iml" />
       <module fileurl="file://$PROJECT_DIR$/ListView/ListView.iml" filepath="$PROJECT_DIR$/ListView/ListView.iml" />
       <module fileurl="file://$PROJECT_DIR$/RelativeLayout/RelativeLayout.iml" filepath="$PROJECT_DIR$/RelativeLayout/RelativeLayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/asynctask/asynctask.iml" filepath="$PROJECT_DIR$/asynctask/asynctask.iml" />
+      <module fileurl="file://$PROJECT_DIR$/asynctask/asynctask.iml" filepath="$PROJECT_DIR$/asynctask/asynctask.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bgservice/bgservice.iml" filepath="$PROJECT_DIR$/bgservice/bgservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/bgservice/bgservice.iml" filepath="$PROJECT_DIR$/bgservice/bgservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/imageSwitcher/imageSwitcher.iml" filepath="$PROJECT_DIR$/imageSwitcher/imageSwitcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/io/io.iml" filepath="$PROJECT_DIR$/io/io.iml" />
       <module fileurl="file://$PROJECT_DIR$/io_db/io_db.iml" filepath="$PROJECT_DIR$/io_db/io_db.iml" />
       <module fileurl="file://$PROJECT_DIR$/io_mysql/io_mysql.iml" filepath="$PROJECT_DIR$/io_mysql/io_mysql.iml" />
@@ -21,7 +26,11 @@
       <module fileurl="file://$PROJECT_DIR$/pichannelvr/pichannelvr.iml" filepath="$PROJECT_DIR$/pichannelvr/pichannelvr.iml" />
       <module fileurl="file://$PROJECT_DIR$/pichannelvr.test.main/pichannelvr.test.main.iml" filepath="$PROJECT_DIR$/pichannelvr.test.main/pichannelvr.test.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/signature/signature.iml" filepath="$PROJECT_DIR$/signature/signature.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sound/sound.iml" filepath="$PROJECT_DIR$/sound/sound.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sound/sound.iml" filepath="$PROJECT_DIR$/sound/sound.iml" />
       <module fileurl="file://$PROJECT_DIR$/stopwatch/stopwatch.iml" filepath="$PROJECT_DIR$/stopwatch/stopwatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tablelayout/tablelayout.iml" filepath="$PROJECT_DIR$/tablelayout/tablelayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tablelayout/tablelayout.iml" filepath="$PROJECT_DIR$/tablelayout/tablelayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/timertask/timertask.iml" filepath="$PROJECT_DIR$/timertask/timertask.iml" />
       <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
       <module fileurl="file://$PROJECT_DIR$/volley/volley.iml" filepath="$PROJECT_DIR$/volley/volley.iml" />
