@@ -3,22 +3,43 @@ package tk.pichannel.viewer;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
+import android.os.Environment;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
-import android.view.animation.AnimationUtils;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.List;
+import java.util.Timer;
 import java.util.TimerTask;
 
+
 public class MainService extends Service {
+    private Timer timer = new Timer();
+    private RequestQueue queue;
+    private JSONArray jsonArrayPosts;
+    private int intPostsPosition = 0;
+
     public MainService() {
     }
 
@@ -34,48 +55,8 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        queue = Volley.newRequestQueue(this);
 
-
-
-
-
-    }
-
-    private class ImageViewSwitchTask extends TimerTask {
-        @Override
-        public void run() {
-            String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/img-repo/c7/d02ab56fe713880510f824d22cb84cbfeff6e2.jpg";
-            Drawable drawable = loadImageFromURL(url);
-            Intent intent = new Intent("loaded");
-            Bundle bundle = new Bundle();
-            InputStream is = null;
-            try {
-                is = (InputStream) new URL(url).getContent();
-                byte[] buf;
-                is.read(buf);
-                intent.putExtra("img",buf);
-                sendBroadcast(intent);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            handler.sendEmptyMessage(0);
-        }
-    }
-
-
-
-    private Drawable loadImageFromURL(String url){
-        try{
-            InputStream is = (InputStream) new URL(url).getContent();
-
-            Drawable draw = Drawable.createFromStream(is, "src");
-            return draw;
-        }catch (Exception e) {
-            //TODO handle error
-            Log.i("loadingImg", e.toString());
-            return null;
-        }
     }
 
     /**
@@ -118,8 +99,109 @@ public class MainService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
+        String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+
+                synchronized (this) {
+                    if (!response.equals(jsonArrayPosts)) {
+                        jsonArrayPosts = response;
+                    }
+                    Log.i("henry",jsonArrayPosts.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(request);
+
+
+        timer.schedule(new ImageViewSwitchTask(), 1000, 6000);
+
+
         return super.onStartCommand(intent, flags, startId);
     }
+
+    private class ImageViewSwitchTask extends TimerTask {
+        @Override
+        public void run() {
+            if (jsonArrayPosts==null) {
+                return;
+            }
+            Log.i("henry",intPostsPosition+" of "+jsonArrayPosts.length());
+
+            if (jsonArrayPosts.length()>intPostsPosition) {
+                try {
+                    JSONObject jsonObjectPost = jsonArrayPosts.getJSONObject(intPostsPosition);
+//                    Log.i("henry", "image_src=" + jsonObjectPost.getString("image_src"));
+
+                    ImageRequest imageRequest = new ImageRequest(jsonObjectPost.getString("image_src"), new Response.Listener<Bitmap>() {
+
+                        @Override
+                        public void onResponse(Bitmap response) {
+//                            Log.i("henry","onResponse");
+
+                            try {
+                                FileOutputStream fos = openFileOutput("cache-image.jpg",MODE_PRIVATE);
+                                Log.i("henry","fos result = "+response.compress(Bitmap.CompressFormat.JPEG,85,fos));
+                                fos.flush();
+                                fos.close();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            Intent it = new Intent("nextImageLoaded");
+                            sendBroadcast(it);
+
+                        }
+                    }, 800, 800, null, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    });
+
+                    queue.add(imageRequest);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                intPostsPosition++;
+                if (intPostsPosition==jsonArrayPosts.length()){
+                    intPostsPosition = 0;
+                }
+            }
+        }
+    }
+
+//    private Drawable loadImageFromURL(String url){
+//        try{
+//            InputStream is = (InputStream) new URL(url).getContent();
+//
+//            Drawable draw = Drawable.createFromStream(is, "src");
+//            return draw;
+//        }catch (Exception e) {
+//            //TODO handle error
+//            Log.i("loadingImg", e.toString());
+//            return null;
+//        }
+//    }
+
+
 
     /**
      * Called by the system to notify a Service that it is no longer used and is being removed.  The
@@ -129,6 +211,11 @@ public class MainService extends Service {
      */
     @Override
     public void onDestroy() {
+        if (timer!=null){
+            timer.cancel();
+            timer=null;
+        }
         super.onDestroy();
+
     }
 }
