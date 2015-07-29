@@ -1,5 +1,7 @@
-include ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl', ':volley', ':music', ':bgservice', ':sound', ':asynctask', ':tablelayout'
+include ':io_mysql', ':webview', ':webviewMap', ':pichannelloadimagefromurl', ':volley', ':music', ':bgservice', ':sound', ':asynctask', ':tablelayout', ':view.pager', ':gesture'
 
 include ':pichannelvr',':pichannelvr.test.main',':RelativeLayout',':signature',':pichanellvr.test.imageswitcher',':timertask',':io',':io_db'
 
 include ':network',':picahnnelvr.test.menu',':pichannelur',':stopwatch',':ListView',':imageSwitcher'
+include ':brad.pager'
+include ':brad.sign'

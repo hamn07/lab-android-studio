@@ -165,6 +165,7 @@ public class MainActivity extends Activity implements ViewSwitcher.ViewFactory{
 
                 is.setImageDrawable(null);
 
+
                 is.setImageDrawable(imageIterator.next());
 
             }

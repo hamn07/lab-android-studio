@@ -10,26 +10,15 @@ so manually move them:
 * ic_launcher-web.png
 * proguard-project.txt
 
-Replaced Jars with Dependencies:
---------------------------------
-The importer recognized the following .jar files as third party
-libraries and replaced them with Gradle dependencies instead. This has
-the advantage that more explicit version information is known, and the
-libraries can be updated automatically. However, it is possible that
-the .jar file in your project was of an older version than the
-dependency we picked, which could render the project not compileable.
-You can disable the jar replacement in the import wizard and try again:
-
-android-support-v4.jar => com.android.support:support-v4:18.0.0
-
 Moved Files:
 ------------
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => imageSwitcher\src\main\AndroidManifest.xml
-* res\ => imageSwitcher\src\main\res\
-* src\ => imageSwitcher\src\main\java\
+* AndroidManifest.xml => brad.sign/src/main/AndroidManifest.xml
+* assets/ => brad.sign/src/main/assets
+* res/ => brad.sign/src/main/res/
+* src/ => brad.sign/src/main/java/
 
 Next Steps:
 -----------
