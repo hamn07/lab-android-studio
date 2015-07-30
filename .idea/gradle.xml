@@ -17,7 +17,6 @@
             <option value="$PROJECT_DIR$/brad.pager" />
             <option value="$PROJECT_DIR$/brad.sign" />
             <option value="$PROJECT_DIR$/gesture" />
-            <option value="$PROJECT_DIR$/imageSwitcher" />
             <option value="$PROJECT_DIR$/io" />
             <option value="$PROJECT_DIR$/io_db" />
             <option value="$PROJECT_DIR$/io_mysql" />
@@ -35,7 +34,6 @@
             <option value="$PROJECT_DIR$/tablelayout" />
             <option value="$PROJECT_DIR$/timertask" />
             <option value="$PROJECT_DIR$/view.pager" />
-            <option value="$PROJECT_DIR$/volley" />
             <option value="$PROJECT_DIR$/webview" />
             <option value="$PROJECT_DIR$/webviewMap" />
           </set>
