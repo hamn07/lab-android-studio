@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/RelativeLayout" />
             <option value="$PROJECT_DIR$/asynctask" />
             <option value="$PROJECT_DIR$/bgservice" />
+            <option value="$PROJECT_DIR$/brad.nofication" />
             <option value="$PROJECT_DIR$/brad.pager" />
             <option value="$PROJECT_DIR$/brad.sign" />
             <option value="$PROJECT_DIR$/gesture" />
@@ -33,6 +34,7 @@
             <option value="$PROJECT_DIR$/sound" />
             <option value="$PROJECT_DIR$/stopwatch" />
             <option value="$PROJECT_DIR$/tablelayout" />
+            <option value="$PROJECT_DIR$/test" />
             <option value="$PROJECT_DIR$/timertask" />
             <option value="$PROJECT_DIR$/view.pager" />
             <option value="$PROJECT_DIR$/volley" />

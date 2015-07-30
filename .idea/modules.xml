@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/asynctask/asynctask.iml" filepath="$PROJECT_DIR$/asynctask/asynctask.iml" />
       <module fileurl="file://$PROJECT_DIR$/bgservice/bgservice.iml" filepath="$PROJECT_DIR$/bgservice/bgservice.iml" />
       <module fileurl="file://$PROJECT_DIR$/bgservice/bgservice.iml" filepath="$PROJECT_DIR$/bgservice/bgservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/brad.nofication/brad.nofication.iml" filepath="$PROJECT_DIR$/brad.nofication/brad.nofication.iml" />
       <module fileurl="file://$PROJECT_DIR$/brad.pager/brad.pager.iml" filepath="$PROJECT_DIR$/brad.pager/brad.pager.iml" />
       <module fileurl="file://$PROJECT_DIR$/brad.sign/brad.sign.iml" filepath="$PROJECT_DIR$/brad.sign/brad.sign.iml" />
       <module fileurl="file://$PROJECT_DIR$/gesture/gesture.iml" filepath="$PROJECT_DIR$/gesture/gesture.iml" />
@@ -46,6 +47,7 @@
       <module fileurl="file://$PROJECT_DIR$/stopwatch/stopwatch.iml" filepath="$PROJECT_DIR$/stopwatch/stopwatch.iml" />
       <module fileurl="file://$PROJECT_DIR$/tablelayout/tablelayout.iml" filepath="$PROJECT_DIR$/tablelayout/tablelayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/tablelayout/tablelayout.iml" filepath="$PROJECT_DIR$/tablelayout/tablelayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/timertask/timertask.iml" filepath="$PROJECT_DIR$/timertask/timertask.iml" />
       <module fileurl="file://$PROJECT_DIR$/timertask/timertask.iml" filepath="$PROJECT_DIR$/timertask/timertask.iml" />
       <module fileurl="file://$PROJECT_DIR$/view.pager/view.pager.iml" filepath="$PROJECT_DIR$/view.pager/view.pager.iml" />
