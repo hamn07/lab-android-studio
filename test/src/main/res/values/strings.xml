@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">test</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_notice_page">NoticePageActivity</string>
+    <string name="button_notify">notify</string>
+</resources>

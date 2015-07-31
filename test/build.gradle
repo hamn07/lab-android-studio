@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "tw.org.iiiedu.taichung.pichannelur"
+        applicationId "tw.org.iiiedu.taichung.test"
         minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
@@ -22,5 +22,4 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
 }

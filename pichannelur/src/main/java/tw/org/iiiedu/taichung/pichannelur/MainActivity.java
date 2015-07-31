@@ -9,7 +9,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends Activity {
@@ -55,6 +63,58 @@ public class MainActivity extends Activity {
         if (imageUri != null) {
             // Update UI to reflect image being shared
             iv.setImageURI(imageUri);
+
+            // POST Image to pichannel data center
+
+
+            StringRequest request = new StringRequest(
+                Request.Method.POST,
+                "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+            ){
+                /**
+                 * Returns a Map of parameters to be used for a POST or PUT request.  Can throw
+                 * {@link AuthFailureError} as authentication may be required to provide these values.
+                 * <p/>
+                 * <p>Note that you can directly override {@link #getBody()} for custom data.</p>
+                 *
+                 * @throws AuthFailureError in the event of auth failure
+                 */
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    return super.getParams();
+                }
+
+                /**
+                 * Returns a list of extra HTTP headers to go along with this request. Can
+                 * throw {@link AuthFailureError} as authentication may be required to
+                 * provide these values.
+                 *
+                 * @throws AuthFailureError In the event of auth failure
+                 */
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+
+                    params.put("Content-Type","multipart/form-data");
+
+                    return params;
+//                    return super.getHeaders();
+                }
+            };
+
+            // Animation
             Animation animation = AnimationUtils.loadAnimation(this, R.anim.abc_fade_in);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
