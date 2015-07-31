@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffff00"
+    android:orientation="vertical" >
+
+    <TextView 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:textSize="36sp"
+	    android:text="I am Page 1"
+        />
+
+    <ViewFlipper
+        android:id="@+id/flipper" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:persistentDrawingCache="animation"
+        android:inAnimation="@anim/show"
+        android:outAnimation="@anim/hide"
+        android:flipInterval="1000"
+        >
+		<FrameLayout
+		    android:id="@+id/f1" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    >
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="48sp"
+		        android:textColor="#ff0000"
+		        android:text="Test 1" 
+		        />
+		</FrameLayout>        
+		<FrameLayout 
+		    android:id="@+id/f2" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    >
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="48sp"
+		        android:textColor="#ff0000"
+		        android:text="Test 2" 
+		        />
+		</FrameLayout>        
+		<FrameLayout 
+		    android:id="@+id/f3" 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+		    >
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textSize="48sp"
+		        android:textColor="#ff0000"
+		        android:text="Test 3" 
+		        />
+		</FrameLayout>        
+    </ViewFlipper>
+    
+    
+    
+    
+</LinearLayout>
+<!-- From: file:/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/brad.pager/src/main/res/layout/page1.xml -->

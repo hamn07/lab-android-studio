@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SoundTest</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_my_video">MyVideoActivity</string>
+    <string name="title_activity_my_video_player">MyVideoPlayerActivity</string>
+    <string name="title_activity_my_camera">MyCameraActivity</string>
+
+</resources>

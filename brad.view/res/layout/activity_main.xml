@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    >
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="4"
+	    android:orientation="vertical"
+	    >
+	    <Button
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:onClick="clear"
+		    android:text="Clear"
+	        />
+	    <Button
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:onClick="undo"
+		    android:text="Undo"
+	        />
+	    <Button
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:onClick="redo"
+		    android:text="Redo"
+	        />
+	    	    	    
+	</LinearLayout>
+	<!-- 這裏是註解區-->
+	<com.example.mycustomview.MyView 
+	    android:id="@+id/mv"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    android:background="#ff0"
+	    />
+
+</LinearLayout>
