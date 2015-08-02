@@ -1,6 +1,7 @@
 package tk.pichannel.viewer;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,8 @@ public class MainActivity extends Activity {
     private ImageViewSwitchHandler handler;
     private Drawable drawableNextImage;
     private ServiceBroadcastReceiver receiver;
+    private ProgressDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +43,13 @@ public class MainActivity extends Activity {
 
 
         iv = (ImageView) findViewById(R.id.iv);
-
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading...");
+        dialog.show();
 //        drawableNextImage = ((App)getApplication()).getDrawableNextImage();
 
-        startService(new Intent(this,MainService.class));
+        startService(new Intent(this, MainService.class));
 
 
     }
@@ -59,6 +65,10 @@ public class MainActivity extends Activity {
     private class ImageViewSwitchHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+
+            if (dialog.isShowing()){
+                dialog.dismiss();
+            }
 
             Log.i("henry", "handle");
 

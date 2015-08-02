@@ -3,9 +3,13 @@ package tk.pichannel.viewer;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.IBinder;
@@ -39,6 +43,7 @@ public class MainService extends Service {
     private RequestQueue queue;
     private JSONArray jsonArrayPosts;
     private int intPostsPosition = 0;
+    private MediaPlayer musicPlayer;
 
     public MainService() {
     }
@@ -57,6 +62,34 @@ public class MainService extends Service {
         super.onCreate();
         queue = Volley.newRequestQueue(this);
 
+        musicPlayer = new MediaPlayer();
+//        try {
+//            AssetFileDescriptor assetFileDescriptor = getResources().openRawResourceFd(R.raw.music);
+//            if (assetFileDescriptor != null) {
+//                musicPlayer.setDataSource(assetFileDescriptor.getFileDescriptor(), assetFileDescriptor.getStartOffset(), assetFileDescriptor.getLength());
+//
+//            }
+//            assetFileDescriptor.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        Uri musicUri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.music);
+        try {
+            musicPlayer.setDataSource(this,musicUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+
+        try {
+            musicPlayer.prepare();
+            musicPlayer.setLooping(true);
+            musicPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -211,6 +244,13 @@ public class MainService extends Service {
      */
     @Override
     public void onDestroy() {
+        if (musicPlayer!=null){
+            if (musicPlayer.isPlaying()){
+                musicPlayer.stop();
+            }
+            musicPlayer.release();
+            musicPlayer=null;
+        }
         if (timer!=null){
             timer.cancel();
             timer=null;
