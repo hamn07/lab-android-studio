@@ -60,28 +60,20 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
         queue = Volley.newRequestQueue(this);
-
         musicPlayer = new MediaPlayer();
-//        try {
-//            AssetFileDescriptor assetFileDescriptor = getResources().openRawResourceFd(R.raw.music);
-//            if (assetFileDescriptor != null) {
-//                musicPlayer.setDataSource(assetFileDescriptor.getFileDescriptor(), assetFileDescriptor.getStartOffset(), assetFileDescriptor.getLength());
-//
-//            }
-//            assetFileDescriptor.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
+
+        //-- 撥放音樂
         Uri musicUri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.music);
+
         try {
             musicPlayer.setDataSource(this,musicUri);
         } catch (IOException e) {
             e.printStackTrace();
         }
         musicPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
 
         try {
             musicPlayer.prepare();
@@ -90,6 +82,10 @@ public class MainService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //-- /撥放音樂
+
+
+
     }
 
     /**
@@ -133,7 +129,7 @@ public class MainService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-
+        // 取得jsonArrayPosts
         String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 
@@ -143,8 +139,9 @@ public class MainService extends Service {
                 synchronized (this) {
                     if (!response.equals(jsonArrayPosts)) {
                         jsonArrayPosts = response;
+                        intPostsPosition = 0;
                     }
-                    Log.i("henry",jsonArrayPosts.toString());
+//                    Log.i("henry",jsonArrayPosts.toString());
                 }
             }
         }, new Response.ErrorListener() {
@@ -157,8 +154,8 @@ public class MainService extends Service {
 
         queue.add(request);
 
-
-        timer.schedule(new ImageViewSwitchTask(), 1000, 6000);
+        // 設定schedule task to traverse jsonArrayPosts
+        timer.schedule(new ImageViewSwitchTask(), 0, 6000);
 
 
         return super.onStartCommand(intent, flags, startId);
@@ -167,11 +164,14 @@ public class MainService extends Service {
     private class ImageViewSwitchTask extends TimerTask {
         @Override
         public void run() {
+            // jsonArrayPosts還沒讀進來就直接離開
             if (jsonArrayPosts==null) {
                 return;
             }
-            Log.i("henry",intPostsPosition+" of "+jsonArrayPosts.length());
+//            Log.i("henry",intPostsPosition+" of "+jsonArrayPosts.length());
 
+
+            // jsonArrayPosts還有資料時，讀取下一張圖片
             if (jsonArrayPosts.length()>intPostsPosition) {
                 try {
                     JSONObject jsonObjectPost = jsonArrayPosts.getJSONObject(intPostsPosition);
@@ -184,8 +184,10 @@ public class MainService extends Service {
 //                            Log.i("henry","onResponse");
 
                             try {
+                                //將圖片儲存於內部package空間
                                 FileOutputStream fos = openFileOutput("cache-image.jpg",MODE_PRIVATE);
-                                Log.i("henry","fos result = "+response.compress(Bitmap.CompressFormat.JPEG,85,fos));
+//                                Log.i("henry","fos result = "+response.compress(Bitmap.CompressFormat.JPEG,85,fos));
+                                response.compress(Bitmap.CompressFormat.JPEG,85,fos);
                                 fos.flush();
                                 fos.close();
                             } catch (FileNotFoundException e) {
@@ -213,28 +215,17 @@ public class MainService extends Service {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                // jsonArrayPosts陣列位置+1
                 intPostsPosition++;
+
+                // looping jsonArrayPosts
                 if (intPostsPosition==jsonArrayPosts.length()){
                     intPostsPosition = 0;
                 }
             }
         }
     }
-
-//    private Drawable loadImageFromURL(String url){
-//        try{
-//            InputStream is = (InputStream) new URL(url).getContent();
-//
-//            Drawable draw = Drawable.createFromStream(is, "src");
-//            return draw;
-//        }catch (Exception e) {
-//            //TODO handle error
-//            Log.i("loadingImg", e.toString());
-//            return null;
-//        }
-//    }
-
-
 
     /**
      * Called by the system to notify a Service that it is no longer used and is being removed.  The
