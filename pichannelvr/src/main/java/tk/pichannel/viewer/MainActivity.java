@@ -34,26 +34,40 @@ public class MainActivity extends Activity {
         handler = new ImageViewSwitchHandler();
         iv = (ImageView) findViewById(R.id.iv);
         scaleAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale);
+        dialog = new ProgressDialog(this);
+
 
         // 註冊Receiver
         receiver = new ServiceBroadcastReceiver();
         registerReceiver(receiver, new IntentFilter("nextImageLoaded"));
 
-        // 啟動服務
-        startService(new Intent(this, MainService.class));
 
-        dialog = new ProgressDialog(this);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading...");
-        dialog.show();
     }
 
     @Override
-    public void finish() {
-        unregisterReceiver(receiver);
-        stopService(new Intent(this,MainService.class));
-        super.finish();
+    protected void onStart() {
+        super.onStart();
 
+        // 啟動服務
+        startService(new Intent(this, MainService.class));
+
+
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading...");
+        dialog.show();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopService(new Intent(this, MainService.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     private class ImageViewSwitchHandler extends Handler {

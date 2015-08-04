@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <service android:name="MainService"></service>
-        <receiver 
+        <receiver
             android:name="MyReceiver"
             android:enabled="true"
             android:exported="true"

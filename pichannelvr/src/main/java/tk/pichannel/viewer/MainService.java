@@ -39,11 +39,14 @@ import java.util.TimerTask;
 
 
 public class MainService extends Service {
+
+    private final String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
     private Timer timer = new Timer();
     private RequestQueue queue;
     private JSONArray jsonArrayPosts;
     private int intPostsPosition = 0;
     private MediaPlayer musicPlayer;
+
 
     public MainService() {
     }
@@ -129,30 +132,42 @@ public class MainService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        // 取得jsonArrayPosts
-        String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-
+        timer.schedule(new TimerTask() {
             @Override
-            public void onResponse(JSONArray response) {
+            public void run() {
 
-                synchronized (this) {
-                    if (!response.equals(jsonArrayPosts)) {
-                        jsonArrayPosts = response;
-                        intPostsPosition = 0;
-                    }
+                // 取得jsonArrayPosts
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        synchronized (this) {
+
+                            if (jsonArrayPosts==null) {
+                                jsonArrayPosts = response;
+                                intPostsPosition = 0;
+                                return;
+                            }
+
+                            if (!response.toString().equals(jsonArrayPosts.toString())) {
+                                jsonArrayPosts = response;
+                                intPostsPosition = 0;
+                            }
 //                    Log.i("henry",jsonArrayPosts.toString());
-                }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+                queue.add(request);
             }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        queue.add(request);
+        },0,10000);
 
         // 設定schedule task to traverse jsonArrayPosts
         timer.schedule(new ImageViewSwitchTask(), 0, 6000);
