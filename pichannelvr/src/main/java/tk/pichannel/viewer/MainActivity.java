@@ -8,22 +8,28 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends Activity {
 
     private ImageView iv;
+    private TextView tv;
     private ImageViewSwitchHandler handler;
     private ServiceBroadcastReceiver receiver;
     private ProgressDialog dialog;
     private Animation scaleAnimation;
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +39,10 @@ public class MainActivity extends Activity {
         //-- instantiate member
         handler = new ImageViewSwitchHandler();
         iv = (ImageView) findViewById(R.id.iv);
+        tv = (TextView) findViewById(R.id.tv);
+        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
         scaleAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale);
         dialog = new ProgressDialog(this);
-
 
         // 註冊Receiver
         receiver = new ServiceBroadcastReceiver();
@@ -85,7 +92,7 @@ public class MainActivity extends Activity {
             Bitmap bitmap = BitmapFactory.decodeFile(getFilesDir().getAbsolutePath()+"/cache-image.jpg", options);
 
             iv.setImageBitmap(bitmap);
-
+//            frameLayout.startAnimation(scaleAnimation);
             iv.startAnimation(scaleAnimation);
 
         }

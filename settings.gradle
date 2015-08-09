@@ -1,1 +1,1 @@
-include ':pichannelvr',':pichannelur'
+include ':pichannelvr',':pichannelur',"test"

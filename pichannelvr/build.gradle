@@ -8,7 +8,7 @@ android {
         applicationId "tk.pichannel.viewer"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 2015080401
+        versionCode 2015080402
         versionName "0.0.1"
     }
     buildTypes {
