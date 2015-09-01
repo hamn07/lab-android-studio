@@ -3,9 +3,10 @@
     package="tk.pichannel.viewer" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -34,10 +35,9 @@
         <receiver
             android:name=".BootCompletedReceiver"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:exported="true" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
@@ -46,6 +46,11 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name=".ThiefAlertActivity"
+            android:label="@string/title_activity_thief_alert" >
+        </activity>
     </application>
 
 </manifest>

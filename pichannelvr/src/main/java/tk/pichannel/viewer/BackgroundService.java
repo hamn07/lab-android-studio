@@ -1,7 +1,12 @@
 package tk.pichannel.viewer;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,11 +32,15 @@ import java.util.TimerTask;
 public class BackgroundService extends Service {
 
 //    private final String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
-    private final String url = "http://192.168.1.10/api/user/hamn07/subscription/hamn07?apiKey=key1";
-    private final String urlPut = "http://192.168.1.10/api/user/hamn07/subscription/hamn07";
+    private final String url = "http://192.168.43.90/api/user/hamn07/subscription/hamn07?apiKey=key1";
+    private final String urlPut = "http://192.168.43.90/api/user/hamn07/subscription/hamn07";
 
     private Timer timer = new Timer();
     private RequestQueue queue;
+
+    private NotificationManager mgr;
+    private int nid;
+
 
 
     public BackgroundService() {
@@ -49,6 +58,10 @@ public class BackgroundService extends Service {
 
         queue = Volley.newRequestQueue(this);
 
+        mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+
+
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -60,7 +73,9 @@ public class BackgroundService extends Service {
                             if(response.getBoolean("has_new_posts"))
                             {
                                 Log.d("henry","true");
-//                                StringRequest req = new StringRequest());
+
+                                sendNotice();
+
                                 StringRequest request = new StringRequest(Request.Method.PUT, urlPut, new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
@@ -103,7 +118,63 @@ public class BackgroundService extends Service {
 
                 queue.add(request);
             }
-        },0,30000);
+        },0,3000);
 
     }
+
+    private void sendNotice(){
+        Intent nextIntent = new Intent(this, MainActivity.class);
+        nextIntent.putExtra("var1", 123);
+
+
+        // 用來產生一個 PendingIntent
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(nextIntent);
+        PendingIntent pending =
+                stackBuilder.getPendingIntent(124, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // 準備建立一個 Notification 物件實體
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setTicker("超級重要的通知");
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.mm);
+        builder.setLargeIcon(
+                BitmapFactory.decodeResource(getResources(), R.drawable.mmb));
+        builder.setContentInfo("Info");
+        builder.setContentText("Text:" + (int)(Math.random()*100));
+        builder.setContentTitle("Title");
+        builder.setWhen(System.currentTimeMillis());
+        builder.setContentIntent(pending);
+        //builder.setSound(Uri.fromFile(new File(sdroot, "aircraft006.mp3")));
+
+
+        int dot = 200;      // Length of a Morse Code "dot" in milliseconds
+        int dash = 500;     // Length of a Morse Code "dash" in milliseconds
+        int short_gap = 200;    // Length of Gap Between dots/dashes
+        int medium_gap = 500;   // Length of Gap Between Letters
+        int long_gap = 1000;    // Length of Gap Between Words
+        long[] pattern = {
+                0,  // Start immediately
+                dot, short_gap, dot, short_gap, dot,    // s
+                medium_gap,
+                dash, short_gap, dash, short_gap, dash, // o
+                medium_gap,
+                dot, short_gap, dot, short_gap, dot,    // s
+                long_gap
+        };
+
+        builder.setVibrate(pattern);
+
+
+        // API Level 11+
+//		Notification notification = builder.getNotification();
+        // API Level 16+ (4.1.2+)
+        Notification notification = builder.build();
+
+        // 發出通知了
+        mgr.notify(nid++, notification);
+
+    }
+
 }
