@@ -7,6 +7,7 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -122,29 +123,32 @@ public class BackgroundService extends Service {
     }
 
     private void sendNotice(){
-        Intent nextIntent = new Intent(this, MainActivity.class);
+        Intent nextIntent = new Intent(this, ThiefAlertActivity.class);
         nextIntent.putExtra("var1", 123);
 
 
         // 用來產生一個 PendingIntent
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addParentStack(ThiefAlertActivity.class);
         stackBuilder.addNextIntent(nextIntent);
         PendingIntent pending =
                 stackBuilder.getPendingIntent(124, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // 準備建立一個 Notification 物件實體
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setTicker("超級重要的通知");
-        builder.setAutoCancel(true);
-        builder.setSmallIcon(R.drawable.mm);
+        builder.setSmallIcon(android.R.drawable.stat_sys_warning);
+        builder.setTicker("有人侵入");
         builder.setLargeIcon(
-                BitmapFactory.decodeResource(getResources(), R.drawable.mmb));
+                BitmapFactory.decodeResource(getResources(), R.drawable.stop));
+        builder.setAutoCancel(true);
         builder.setContentInfo("Info");
-        builder.setContentText("Text:" + (int)(Math.random()*100));
-        builder.setContentTitle("Title");
+        //builder.setContentText("Text:" + (int)(Math.random()*100));
+        builder.setContentText("請確認是否為陌生人");
+        builder.setContentTitle("有人侵入");
         builder.setWhen(System.currentTimeMillis());
         builder.setContentIntent(pending);
+        Uri sound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.buzz);
+        builder.setSound(sound);
         //builder.setSound(Uri.fromFile(new File(sdroot, "aircraft006.mp3")));
 
 

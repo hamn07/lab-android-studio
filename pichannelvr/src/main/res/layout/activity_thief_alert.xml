@@ -5,10 +5,29 @@
     >
     <!--android:background="@drawable/background"-->
     <ImageView
-        android:id="@+id/thiefiv"
+        android:id="@+id/iv_thief"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/safe"
+            android:layout_weight="1"
+            android:onClick="retractAlarm"
+            />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/thief"
+            android:layout_weight="1"
+            android:onClick="confirmAlarm"
+            />
+    </LinearLayout>
 
 </FrameLayout>
