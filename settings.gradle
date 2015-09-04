@@ -1,1 +1,2 @@
 include ':pichannelvr',':pichannelur'
+include ':bluetoothAPP'

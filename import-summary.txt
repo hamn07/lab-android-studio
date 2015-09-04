@@ -27,10 +27,10 @@ Moved Files:
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => brad.nofication/src/main/AndroidManifest.xml
-* assets/ => brad.nofication/src/main/assets
-* res/ => brad.nofication/src/main/res/
-* src/ => brad.nofication/src/main/java/
+* AndroidManifest.xml => bluetoothAPP/src/main/AndroidManifest.xml
+* assets/ => bluetoothAPP/src/main/assets
+* res/ => bluetoothAPP/src/main/res/
+* src/ => bluetoothAPP/src/main/java/
 
 Missing Android Support Repository:
 -----------------------------------
