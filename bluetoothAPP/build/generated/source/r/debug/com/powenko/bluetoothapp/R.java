@@ -24,14 +24,12 @@ public final class R {
         public static final int clean=0x7f08000b;
         public static final int close=0x7f08000d;
         public static final int entry=0x7f080009;
-        public static final int label=0x7f080005;
+        public static final int label=0x7f080008;
         public static final int ll=0x7f080007;
-        public static final int ll2=0x7f080006;
-        public static final int ll3=0x7f080008;
+        public static final int ll3=0x7f080006;
         public static final int open=0x7f08000c;
         public static final int send=0x7f08000a;
-        public static final int speeddown=0x7f08000f;
-        public static final int speedup=0x7f08000e;
+        public static final int sv=0x7f080005;
         public static final int txtArduino=0x7f080000;
         public static final int txtArduinoMSG=0x7f080001;
     }

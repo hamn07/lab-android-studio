@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/bluetoothAPP/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/iii-user/StudioProjects/EmbeddAndroidTranningClass/bluetoothAPP/src/debug/assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/Hamn/Workspace/lab-android-studio/bluetoothAPP/src/main/assets"/></dataSet><dataSet config="debug"><source path="/Users/Hamn/Workspace/lab-android-studio/bluetoothAPP/src/debug/assets"/></dataSet></merger>

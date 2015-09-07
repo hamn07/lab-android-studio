@@ -8,8 +8,11 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.EditText;  
 import android.widget.Button;
@@ -22,6 +25,7 @@ import java.util.UUID;
 
 public class MainActivity extends Activity
 {
+    ScrollView sv;
     TextView myLabel;
     EditText myTextbox;
     BluetoothAdapter mBluetoothAdapter;
@@ -34,18 +38,67 @@ public class MainActivity extends Activity
     int readBufferPosition;
     int counter;
     volatile boolean stopWorker;
+    Handler mhandler = new Handler();
     
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
+
+        sv = (ScrollView) findViewById(R.id.sv);
         myLabel = (TextView)findViewById(R.id.label);
         myTextbox = (EditText)findViewById(R.id.entry);
         
         myLabel.setMovementMethod(new ScrollingMovementMethod());
+
+        mhandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+
+
+                myLabel.setText(myLabel.getText().toString()+"\n"+msg.getData().getString("eMsg"));
+
+            }
+        };
     }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        Log.i("henry", "onStart");
+//
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                while (mmDevice==null) {
+//                    Log.i("henry", "run(): findBT");
+//                    findBT();
+//                }
+//                while (mmSocket==null) {
+//                    try {
+//                        Log.i("henry", "run(): openBT");
+//                        openBT();
+//                    } catch (IOException e) {
+//
+//                        mmSocket=null;
+//
+//                        Bundle bundle = new Bundle();
+//                        bundle.putString("eMsg", e.getMessage());
+//                        Message message = new Message();
+//                        message.setData(bundle);
+//
+//                        mhandler.sendMessage(message);
+//                    }
+//                }
+//            }
+//        }).start();
+//    }
+
     //找藍芽
     public void openBtn(View v)
     {
@@ -160,6 +213,7 @@ public class MainActivity extends Activity
                                             String t1=myLabel.getText().toString();
                                             t1=t1+"\n"+data;
                                             myLabel.setText(t1);
+                                            sv.fullScroll(View.FOCUS_DOWN);
                                         }
                                     });
                                 }
@@ -226,34 +280,6 @@ public class MainActivity extends Activity
     	if(iSpeed<=80){ iSpeed = 0;}
     	str = Integer.toString(iSpeed);
     	return str;
-    }
-    public void speedup(View v) throws IOException
-    {
-    	if(mBluetoothAdapter == null)
-    	{
-    		findBT();
-    		openBT();
-    	}
-	        String msg = "q";
-	        msg += "\n";
-	        mmOutputStream.write(msg.getBytes());
-	        String t1=myLabel.getText().toString();
-	        t1=t1+"\nSpeed Up";
-	        myLabel.setText(t1);
-    }
-    public void speeddown(View v) throws IOException
-    {
-    	if(mBluetoothAdapter == null)
-    	{
-    		findBT();
-    		openBT();
-    	}
-        String msg = "w";
-        msg += "\n";
-        mmOutputStream.write(msg.getBytes());
-        String t1=myLabel.getText().toString();
-        t1=t1+"\nSpeed Down";
-        myLabel.setText(t1);
     }
     public void cleanScreen(View v) throws IOException
     {

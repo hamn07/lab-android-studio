@@ -32,13 +32,13 @@ ADDED from AndroidManifest.xml:11:9
 	android:name
 		ADDED from AndroidManifest.xml:11:26
 uses-permission#android.permission.CHANGE_NETWORK_STATE
-ADDED from AndroidManifest.xml:12:1
+ADDED from AndroidManifest.xml:12:9
 	android:name
-		ADDED from AndroidManifest.xml:12:18
+		ADDED from AndroidManifest.xml:12:26
 uses-permission#android.permission.BLUETOOTH
-ADDED from AndroidManifest.xml:13:13
+ADDED from AndroidManifest.xml:13:9
 	android:name
-		ADDED from AndroidManifest.xml:13:30
+		ADDED from AndroidManifest.xml:13:26
 supports-screens
 ADDED from AndroidManifest.xml:14:5
 	android:anyDensity
