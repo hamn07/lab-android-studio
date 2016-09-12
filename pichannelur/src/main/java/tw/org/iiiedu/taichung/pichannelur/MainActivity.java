@@ -39,7 +39,7 @@ import java.util.Map;
 public class MainActivity extends Activity {
 
 //    private ImageView iv;
-    private final String sUploadURL = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07";
+    private final String sUploadURL = "http://52.198.106.239//api/user/hamn07";
     private RequestQueue rQueue;
     private Bitmap bitmapFileToUpload;
     private String sFileContentToUpload;
@@ -185,28 +185,6 @@ public class MainActivity extends Activity {
             rQueue.add(request);
 
 
-
-
-
-//                PhotoMultipartRequest<Object> pmRequest =
-//                    new PhotoMultipartRequest<Object>(sUploadURL, new Response.ErrorListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Log.d("henry",error.getMessage());
-//                        }
-//                    }, new Response.Listener<Object>() {
-//                        @Override
-//                        public void onResponse(Object response) {
-//                            Log.d("henry","OK:"+response);
-//                        }
-//                    }, new File(imageUri.getPath()));
-//
-//
-//                rQueue.add(pmRequest);
-
-
-
-
         }
     }
 
@@ -214,36 +192,6 @@ public class MainActivity extends Activity {
         ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         if (imageUris != null) {
             // Update UI to reflect multiple images being shared
-        }
-    }
-
-    void convertToBase64StringFileContentToUpload(Uri uri) {
-
-
-
-
-
-
-
-
-    }
-    void convertToStringFileContentToUpload(Uri imageUri){
-        FileInputStream fin = null;
-        try {
-            fin = new FileInputStream(new File(imageUri.getPath()));
-            BufferedReader br = new BufferedReader(new InputStreamReader(fin));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            try {
-                while ((line=br.readLine())!=null) {
-                    sb.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            sFileContentToUpload = sb.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 }
