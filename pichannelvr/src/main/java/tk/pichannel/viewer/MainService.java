@@ -39,8 +39,9 @@ import java.util.TimerTask;
 
 
 public class MainService extends Service {
+    private final String url = getString(R.string.pichannel_server_url)+"api/user/hamn07?apiKey=key1";
 
-    private final String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
+//    private final String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
 //    private final String url = "http://192.168.43.90/api/user/hamn07?apiKey=key1";
 
     private Timer timer = new Timer();
@@ -93,6 +94,8 @@ public class MainService extends Service {
 
     }
 
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -135,7 +138,7 @@ public class MainService extends Service {
         },0,10000);
 
         // 設定schedule task to traverse jsonArrayPosts
-        timer.schedule(new ImageViewSwitchTask(), 0, 6000);
+        timer.schedule(new ImageViewSwitchTask(), 0, 20000);
 
 
         return super.onStartCommand(intent, flags, startId);

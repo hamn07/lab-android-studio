@@ -5,4 +5,10 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_thief_alert">ThiefAlertActivity</string>
+    <string name="pichannel_server_url">http://52.198.106.239</string>
+    <string-array name="api">
+        <item>/api/user/</item>
+    </string-array>
+
+
 </resources>

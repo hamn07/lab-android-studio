@@ -32,8 +32,8 @@ import java.util.TimerTask;
 
 public class BackgroundService extends Service {
 
-    private final String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07/subscription/hamn07?apiKey=key1";
-    private final String urlPut = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07/subscription/hamn07";
+    private final String url = "http://52.198.106.239/api/user/hamn07/subscription/hamn07?apiKey=key1";
+    private final String urlPut = "http://52.198.106.239/api/user/hamn07/subscription/hamn07";
 
     private Timer timer = new Timer();
     private RequestQueue queue;

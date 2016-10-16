@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 
         // 啟動服務
         startService(new Intent(this, MainService.class));
-        startService(new Intent(this, BackgroundService.class));
+        //startService(new Intent(this, BackgroundService.class));
 
 
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
