@@ -1,5 +1,6 @@
 package tk.pichannel.viewer;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import tk.pichannel.viewer.sync.SyncUtils;
+
 
 public class MainActivity extends Activity {
 
@@ -30,6 +33,7 @@ public class MainActivity extends Activity {
     private ProgressDialog dialog;
     private Animation scaleAnimation;
     private FrameLayout frameLayout;
+    Account mAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,7 @@ public class MainActivity extends Activity {
         receiver = new ServiceBroadcastReceiver();
         registerReceiver(receiver, new IntentFilter("nextImageLoaded"));
 
-
+        SyncUtils.CreateSyncAccount(this);
     }
 
     @Override

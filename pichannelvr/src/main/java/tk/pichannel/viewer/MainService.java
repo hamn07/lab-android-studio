@@ -39,7 +39,9 @@ import java.util.TimerTask;
 
 
 public class MainService extends Service {
-    private final String url = getString(R.string.pichannel_server_url)+"api/user/hamn07?apiKey=key1";
+    private final String url = BuildConfig.API_HOST+BuildConfig.API_USER_ENDPOINT
+            +"/hamn07?apiKey=key1";
+//    private final String url = getString(R.string.pichannel_server_url)+"/api/user/hamn07?apiKey=key1";
 
 //    private final String url = "http://ec2-52-26-138-212.us-west-2.compute.amazonaws.com/api/user/hamn07?apiKey=key1";
 //    private final String url = "http://192.168.43.90/api/user/hamn07?apiKey=key1";

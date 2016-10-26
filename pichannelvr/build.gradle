@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    productFlavors {
+        prod {
+            applicationId "tk.pichannel.view"
+            buildConfigField 'String', 'API_HOST', '"http://52.198.106.239"'
+            buildConfigField 'String', 'API_USER_ENDPOINT', '"/api/user"'
+            resValue 'string', 'ACCOUNT_TYPE', 'tk.pichannel.account'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
 //    buildToolsVersion "22.0.1"
