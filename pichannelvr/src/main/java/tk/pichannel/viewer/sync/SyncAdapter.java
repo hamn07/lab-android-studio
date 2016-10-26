@@ -4,27 +4,43 @@ import android.accounts.Account;
 import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.content.SyncResult;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import tk.pichannel.Utilities;
 import tk.pichannel.viewer.BuildConfig;
 import tk.pichannel.viewer.MainSingleton;
 import tk.pichannel.viewer.data.PichannelContentProvider;
+import tk.pichannel.viewer.data.Post;
+import tk.pichannel.viewer.data.PostTable;
 
 /**
  * Created by HamnLee on 2016/10/20.
@@ -124,19 +140,140 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void synchronizeLocalPostData(JSONArray posts_jsonArray) {
 
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+
         for (int i=0;i<posts_jsonArray.length();i++) {
+
+
+
+
             try {
                 JSONObject post_jsonObject = posts_jsonArray.getJSONObject(i);
-                Log.i(TAG, "((id)) = "+post_jsonObject.getInt(PichannelContentProvider.Post.ID));
+
+                Post post = new Post.Builder()
+                        .id(post_jsonObject.getString("id"))
+                        .postUnixtimestampeOriginal(post_jsonObject.getString("post_time"))
+                        .userId("hamn07")
+                        .imageSrc(post_jsonObject.getString("image_src"))
+                        .text(post_jsonObject.getString("text"))
+                        .build();
+
+
+                downloadImageFileIfNotExists(post);
+
+                ContentValues cv = new ContentValues();
+                cv.put(PostTable.COLUMN_ID,post_jsonObject.getString("id"));
+                cv.put(PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL,post_jsonObject.getString("post_time"));
+                cv.put(PostTable.COLUMN_USER_ID, "hamn07");
+                cv.put(PostTable.COLUMN_IMAGE_FILE_NAME, Utilities.getImageFileNameAsStringByURL(post_jsonObject.getString("image_src")));
+                cv.put(PostTable.COLUMN_IMAGE_FOLDER_NAME, Utilities.getImageFolderNameAsStringByURL(post_jsonObject.getString("image_src")));
+                cv.put(PostTable.COLUMN_TEXT, post_jsonObject.getString("text"));
+
+                mContentResolver.insert(PichannelContentProvider.Post.CONTENT_URI,cv);
+
+//                operations.add(
+//                        ContentProviderOperation.newInsert(PichannelContentProvider.Post.CONTENT_URI)
+//                                .withValue(PichannelContentProvider.Post.ID, post_jsonObject.get("id"))
+//                                .withValue(PichannelContentProvider.Post.POST_UNIXTIMESTAMP_ORIGINAL, post_jsonObject.get("post_time"))
+//                                .withValue(PichannelContentProvider.Post.USER_ID, "hamn07")
+//                                .withValue(PichannelContentProvider.Post.IMAGE_FOLDER_NAME, Utilities.getImageFolderNameAsStringByURL(post_jsonObject.getString("image_src")))
+//                                .withValue(PichannelContentProvider.Post.IMAGE_FILE_NAME, Utilities.getImageFileNameAsStringByURL(post_jsonObject.getString("image_src")))
+//                                .withValue(PichannelContentProvider.Post.TEXT, post_jsonObject.getString("text"))
+//                                .build());
+
+//                Log.i(TAG, "((id)) = "+post_jsonObject.getInt(PichannelContentProvider.Post.ID));
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-//        downloadImageFileIfNotExists();
+
+
+//        try {
+//
+//            Log.i(TAG,"((apply batch))");
+//            ContentProviderResult[] results = mContentResolver.applyBatch(PichannelContentProvider.AUTHORITY, operations);
+//
+//            Log.i(TAG,"((results_length))"+results);
+//
+//            for (ContentProviderResult result:results) {
+//                if (result.count > 0) {
+//                    Log.i(TAG,"insert successfully!");
+//                }
+//                else
+//                {
+//                    Log.i(TAG,"CONFLICT_IGNORE");
+//                }
+//            }
+//
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        } catch (OperationApplicationException e) {
+//            e.printStackTrace();
+//        }
+
+
+
+
+
 //        updatePostTable();
     }
+
+    private void downloadImageFileIfNotExists(final Post post) {
+
+        if (Utilities.fileExists(getContext(),post.getImageFileName()))
+            return;
+
+
+        int maxWidth=0;
+        int maxHeight=0;
+        ImageView.ScaleType scaleType=null;
+        Bitmap.Config decodeConfig=null;
+
+        ImageRequest imageRequest = new ImageRequest(post.getImageSrc(),
+                new Response.Listener<Bitmap>() {
+                    @Override
+                    public void onResponse(Bitmap response) {
+
+                        FileOutputStream fOut = null;
+
+                        try {
+
+                            fOut = getContext().openFileOutput(post.getImageFileName(), Context.MODE_PRIVATE);
+                            response.compress(Bitmap.CompressFormat.JPEG,85,fOut);
+                            fOut.flush();
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+
+                        } finally {
+                            try {
+
+                                if (fOut!=null) {
+                                    fOut.close();
+                                }
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }, maxWidth, maxHeight, scaleType, decodeConfig,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        mRequestQueue.add(imageRequest);
+    }
+
 
     private void downloadPosts_jsonArray(final IVolleyCallback callback) {
 

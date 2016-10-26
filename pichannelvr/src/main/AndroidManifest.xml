@@ -21,7 +21,8 @@
         <provider
             android:name=".data.PichannelContentProvider"
             android:authorities="tk.pichannel.provider"
-            android:exported="false" />
+            android:exported="false"
+            android:syncable="true"/>
 
         <activity
             android:name=".MainActivity"

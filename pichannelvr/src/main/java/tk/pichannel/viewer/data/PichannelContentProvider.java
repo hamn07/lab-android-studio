@@ -71,7 +71,7 @@ public class PichannelContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sort) {
         SQLiteQueryBuilder queryBuilder=new SQLiteQueryBuilder();
-//        checkColumns(projection);
+//      TODO  checkColumns(projection);
         queryBuilder.setTables(Post.TABLE_NAME);
 
         switch (uriMatcher.match(uri)) {
@@ -112,12 +112,20 @@ public class PichannelContentProvider extends ContentProvider {
         return null;
     }
 
+    /**
+     *
+     * @param uri
+     * @param contentValues
+     * @return original uri means CONFLICT_IGNORE
+     *         original uri appended a id means INSERT SUCCESS
+     */
     @Nullable
     @Override
-    public Uri insert(Uri url, ContentValues contentValues) {
+    public Uri insert(Uri uri, ContentValues contentValues) {
 
         long rowID=
-                pichannelDbOpenHelper.getWritableDatabase().insert(Post.TABLE_NAME, null, contentValues);
+                pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict(
+                        PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
 
         if (rowID > 0) {
             Uri insertedRowUri=
@@ -128,16 +136,8 @@ public class PichannelContentProvider extends ContentProvider {
             return(insertedRowUri);
         }
 
-        pichannelDbOpenHelper.getWritableDatabase()
 
-//        INSERT INTO memos(id,text)
-//        SELECT 5, 'text to insert'
-//        WHERE NOT EXISTS(SELECT 1 FROM memos WHERE id = 5 AND text = 'text to insert');
-
-        pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict()
-
-        throw new SQLException("Failed to insert row into " + url);
-
+        return uri;
     }
 
     @Override

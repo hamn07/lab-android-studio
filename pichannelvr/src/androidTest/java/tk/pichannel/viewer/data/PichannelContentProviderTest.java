@@ -27,7 +27,8 @@ public class PichannelContentProviderTest {
         cv.put(PostTable.COLUMN_IMAGE_FOLDER_NAME,Stub.IMAGE_FOLDER_NAME);
         cv.put(PostTable.COLUMN_TEXT,Stub.TEXT);
 
-        InstrumentationRegistry.getTargetContext().getContentResolver().insert(PichannelContentProvider.Post.CONTENT_URI,cv);
+        InstrumentationRegistry.getTargetContext().getContentResolver().insert(
+                PichannelContentProvider.Post.CONTENT_URI, cv);
     }
 
     @Test

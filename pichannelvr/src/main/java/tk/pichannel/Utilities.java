@@ -2,6 +2,11 @@
  * Created by HamnLee on 2016/9/26.
  */
 package tk.pichannel;
+
+import android.content.Context;
+
+import java.io.File;
+
 public class Utilities {
 
     static final int SUB_DIRECTORY_NAME_CHAR_LENGTH = 2;
@@ -17,5 +22,12 @@ public class Utilities {
         int array_index_of_sub_directory_name_start = array_index_of_sub_directory_name_end - SUB_DIRECTORY_NAME_CHAR_LENGTH;
 
         return urlString.substring(array_index_of_sub_directory_name_start,array_index_of_sub_directory_name_end);
+    }
+    public static boolean fileExists(Context context, String filename) {
+        File file = context.getFileStreamPath(filename);
+        if(file == null || !file.exists()) {
+            return false;
+        }
+        return true;
     }
 }
