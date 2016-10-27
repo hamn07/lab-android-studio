@@ -80,7 +80,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             PichannelContentProvider.Post.ID,
             PichannelContentProvider.Post.POST_UNIXTIMESTAMP_ORIGINAL,
             PichannelContentProvider.Post.USER_ID,
-            PichannelContentProvider.Post.IMAGE_FOLDER_NAME,
             PichannelContentProvider.Post.IMAGE_FILE_NAME,
             PichannelContentProvider.Post.TEXT,
     };
@@ -144,9 +143,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         for (int i=0;i<posts_jsonArray.length();i++) {
 
-
-
-
             try {
                 JSONObject post_jsonObject = posts_jsonArray.getJSONObject(i);
 
@@ -158,30 +154,22 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         .text(post_jsonObject.getString("text"))
                         .build();
 
+                Log.i(TAG, "((id)) = "+post_jsonObject.getInt(PichannelContentProvider.Post.ID));
 
                 downloadImageFileIfNotExists(post);
 
-                ContentValues cv = new ContentValues();
-                cv.put(PostTable.COLUMN_ID,post_jsonObject.getString("id"));
-                cv.put(PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL,post_jsonObject.getString("post_time"));
-                cv.put(PostTable.COLUMN_USER_ID, "hamn07");
-                cv.put(PostTable.COLUMN_IMAGE_FILE_NAME, Utilities.getImageFileNameAsStringByURL(post_jsonObject.getString("image_src")));
-                cv.put(PostTable.COLUMN_IMAGE_FOLDER_NAME, Utilities.getImageFolderNameAsStringByURL(post_jsonObject.getString("image_src")));
-                cv.put(PostTable.COLUMN_TEXT, post_jsonObject.getString("text"));
+                updatePostTable(post);
 
-                mContentResolver.insert(PichannelContentProvider.Post.CONTENT_URI,cv);
 
 //                operations.add(
 //                        ContentProviderOperation.newInsert(PichannelContentProvider.Post.CONTENT_URI)
 //                                .withValue(PichannelContentProvider.Post.ID, post_jsonObject.get("id"))
 //                                .withValue(PichannelContentProvider.Post.POST_UNIXTIMESTAMP_ORIGINAL, post_jsonObject.get("post_time"))
 //                                .withValue(PichannelContentProvider.Post.USER_ID, "hamn07")
-//                                .withValue(PichannelContentProvider.Post.IMAGE_FOLDER_NAME, Utilities.getImageFolderNameAsStringByURL(post_jsonObject.getString("image_src")))
 //                                .withValue(PichannelContentProvider.Post.IMAGE_FILE_NAME, Utilities.getImageFileNameAsStringByURL(post_jsonObject.getString("image_src")))
 //                                .withValue(PichannelContentProvider.Post.TEXT, post_jsonObject.getString("text"))
 //                                .build());
 
-//                Log.i(TAG, "((id)) = "+post_jsonObject.getInt(PichannelContentProvider.Post.ID));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -217,7 +205,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
 
 
-//        updatePostTable();
+
+    }
+
+    private void updatePostTable(Post post) {
+
+        ContentValues cv = new ContentValues();
+        cv.put(PostTable.COLUMN_ID,post.getId());
+        cv.put(PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL,post.getPostUnixtimestampeOriginal());
+        cv.put(PostTable.COLUMN_USER_ID, post.getUserId());
+        cv.put(PostTable.COLUMN_IMAGE_FILE_NAME, post.getImageFileName());
+        cv.put(PostTable.COLUMN_TEXT, post.getText());
+
+        mContentResolver.insert(PichannelContentProvider.Post.CONTENT_URI,cv);
     }
 
     private void downloadImageFileIfNotExists(final Post post) {

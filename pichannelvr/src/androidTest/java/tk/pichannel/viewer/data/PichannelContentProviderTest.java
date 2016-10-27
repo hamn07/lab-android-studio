@@ -24,7 +24,6 @@ public class PichannelContentProviderTest {
         cv.put(PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL,Stub.POST_UNIXTIMESTAMP_ORIGINAL);
         cv.put(PostTable.COLUMN_USER_ID,Stub.USER_ID);
         cv.put(PostTable.COLUMN_IMAGE_FILE_NAME,Stub.IMAGE_FILE_NAME);
-        cv.put(PostTable.COLUMN_IMAGE_FOLDER_NAME,Stub.IMAGE_FOLDER_NAME);
         cv.put(PostTable.COLUMN_TEXT,Stub.TEXT);
 
         InstrumentationRegistry.getTargetContext().getContentResolver().insert(
@@ -34,19 +33,19 @@ public class PichannelContentProviderTest {
     @Test
     public void insertionOfPostTable() {
 
-        String[] projection = {PostTable.COLUMN_IMAGE_FOLDER_NAME,PostTable.COLUMN_IMAGE_FILE_NAME};
+        String[] projection = {PostTable.COLUMN_IMAGE_FILE_NAME};
         String selection = "id=? AND user_id=?";
         String[] selectionArgs = {Stub.ID,Stub.USER_ID};
 
         Cursor cursor = InstrumentationRegistry.getTargetContext().getContentResolver().query(
                 PichannelContentProvider.Post.CONTENT_URI,projection,selection,selectionArgs,null);
 
+        int columnIndex_ImageFileName   = cursor.getColumnIndex(PostTable.COLUMN_IMAGE_FILE_NAME);
 
-        while (cursor.moveToNext()) {
-            assertEquals(cursor.getString(0),Stub.IMAGE_FOLDER_NAME);
-            assertEquals(cursor.getString(1),Stub.IMAGE_FILE_NAME);
+        cursor.moveToNext();
 
-        }
+        assertEquals(cursor.getString(columnIndex_ImageFileName),Stub.IMAGE_FILE_NAME);
+
         cursor.close();
     }
 

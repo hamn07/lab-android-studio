@@ -41,7 +41,6 @@ public class PichannelDbOpenHelperTest {
         cv.put(PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL,Stub.POST_UNIXTIMESTAMP_ORIGINAL);
         cv.put(PostTable.COLUMN_USER_ID,Stub.USER_ID);
         cv.put(PostTable.COLUMN_IMAGE_FILE_NAME,Stub.IMAGE_FILE_NAME);
-        cv.put(PostTable.COLUMN_IMAGE_FOLDER_NAME,Stub.IMAGE_FOLDER_NAME);
         cv.put(PostTable.COLUMN_TEXT,Stub.TEXT);
 
         db.insert(PostTable.TABLE_NAME,null,cv);
@@ -68,19 +67,17 @@ public class PichannelDbOpenHelperTest {
     public void insertionOfPostTable() {
 
         String table = PostTable.TABLE_NAME;
-        String[] columns = new String[]{PostTable.COLUMN_IMAGE_FOLDER_NAME,PostTable.COLUMN_IMAGE_FILE_NAME};
+        String[] columns = new String[]{PostTable.COLUMN_IMAGE_FILE_NAME};
         String selection = PostTable.COLUMN_ID + "=? AND "+ PostTable.COLUMN_USER_ID + "=?";
         String[] selectionArgs = new String[]{Stub.ID,Stub.USER_ID};
 
 //        Cursor cursor = db.rawQuery("SELECT image_folder_name,image_file_name FROM post WHERE id=1 AND user_id='foo'",null);
         Cursor cursor = db.query(table, columns, selection, selectionArgs,null,null,null);
 
-        int columnIndex_ImageFolderName = cursor.getColumnIndex(PostTable.COLUMN_IMAGE_FOLDER_NAME);
         int columnIndex_ImageFileName   = cursor.getColumnIndex(PostTable.COLUMN_IMAGE_FILE_NAME);
 
         cursor.moveToNext();
 
-        assertEquals(cursor.getString(columnIndex_ImageFolderName), Stub.IMAGE_FOLDER_NAME);
         assertEquals(cursor.getString(columnIndex_ImageFileName)  , Stub.IMAGE_FILE_NAME);
 
         cursor.close();

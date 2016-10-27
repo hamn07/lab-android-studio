@@ -9,7 +9,6 @@ public class PostTable {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_POST_UNIXTIMESTAMP_ORIGINAL = "post_unixtimestamp_original";
     public static final String COLUMN_USER_ID = "user_id";
-    public static final String COLUMN_IMAGE_FOLDER_NAME = "image_folder_name";
     public static final String COLUMN_IMAGE_FILE_NAME = "image_file_name";
     public static final String COLUMN_TEXT = "text";
 
@@ -19,7 +18,6 @@ public class PostTable {
 //            "    "+COLUMN_ID+" INTEGER, " +
 //            "    "+COLUMN_POST_UNIXTIMESTAMP_ORIGINAL+" INTEGER," +
 //            "    "+COLUMN_USER_ID+" TEXT," +
-//            "    "+COLUMN_IMAGE_FOLDER_NAME+" TEXT," +
 //            "    "+COLUMN_IMAGE_FILE_NAME+" TEXT," +
 //            "    "+COLUMN_TEXT+" TEXT)";
 
@@ -28,7 +26,6 @@ public class PostTable {
             "    "+COLUMN_ID+" INTEGER, " +
             "    "+COLUMN_POST_UNIXTIMESTAMP_ORIGINAL+" INTEGER," +
             "    "+COLUMN_USER_ID+" TEXT," +
-            "    "+COLUMN_IMAGE_FOLDER_NAME+" TEXT," +
             "    "+COLUMN_IMAGE_FILE_NAME+" TEXT," +
             "    "+COLUMN_TEXT+" TEXT," +
             "    PRIMARY KEY ("+COLUMN_ID+","+COLUMN_USER_ID+")" +

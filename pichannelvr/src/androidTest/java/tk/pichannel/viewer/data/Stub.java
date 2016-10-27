@@ -7,8 +7,7 @@ class Stub {
     static final String ID = "1";
     static final String POST_UNIXTIMESTAMP_ORIGINAL = "123456789";
     static final String USER_ID = "foo";
-    static final String IMAGE_FOLDER_NAME = "fo";
-    static final String IMAGE_FILE_NAME = "xyzdkal345.jpg";
-    static final String TEXT = "description";
+    static final String IMAGE_FILE_NAME = "xyzdkal347.jpg";
+    static final String TEXT = "nice picture";
 
 }

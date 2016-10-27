@@ -14,7 +14,7 @@ import android.util.Log;
 public class PichannelDbOpenHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME="pichannel.db";
-    public static final int SCHEMA_VERSION =2;
+    public static final int SCHEMA_VERSION =5;
     private final String TAG = PichannelDbOpenHelper.class.getName();
 
     public PichannelDbOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

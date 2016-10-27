@@ -14,11 +14,12 @@ import android.provider.BaseColumns;
 import android.provider.UserDictionary;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-
+import android.util.Log;
 
 
 public class PichannelContentProvider extends ContentProvider {
 
+    private static final String TAG = PichannelContentProvider.class.getName();
     private PichannelDbOpenHelper pichannelDbOpenHelper;
     private SQLiteDatabase db;
     public static String AUTHORITY="tk.pichannel.provider";
@@ -45,7 +46,6 @@ public class PichannelContentProvider extends ContentProvider {
         public static final String ID = PostTable.COLUMN_ID;
         public static final String POST_UNIXTIMESTAMP_ORIGINAL = PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL;
         public static final String USER_ID = PostTable.COLUMN_USER_ID;
-        public static final String IMAGE_FOLDER_NAME = PostTable.COLUMN_IMAGE_FOLDER_NAME;
         public static final String IMAGE_FILE_NAME = PostTable.COLUMN_IMAGE_FILE_NAME;
         public static final String TEXT = PostTable.COLUMN_TEXT;
 
@@ -123,9 +123,11 @@ public class PichannelContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
 
+        Log.i(TAG,"insert start");
+
         long rowID=
                 pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict(
-                        PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_IGNORE);
+                        PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 
         if (rowID > 0) {
             Uri insertedRowUri=
