@@ -6,15 +6,12 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.provider.UserDictionary;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 
 public class PichannelContentProvider extends ContentProvider {
@@ -24,23 +21,27 @@ public class PichannelContentProvider extends ContentProvider {
     private SQLiteDatabase db;
     public static String AUTHORITY="tk.pichannel.provider";
 
-    private static final UriMatcher uriMatcher;
+    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final int POSTS=1;
     private static final int POSTS_PER_USER_ID =2;
-//    public static final String CONTENT_TYPE= ContentResolver.CURSOR_DIR_BASE_TYPE+"/posts";
-//    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE+"/post";
 
     static {
-        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(AUTHORITY, Post.TABLE_NAME, POSTS);
-        uriMatcher.addURI(AUTHORITY, Post.TABLE_NAME+"/*", POSTS_PER_USER_ID);
+//        e.g., content://tk.pichannel.provider/post
+        sUriMatcher.addURI(AUTHORITY, Post.TABLE_NAME, POSTS);
+//        e.g., content://tk.pichannel.provider/post/hamn07
+        sUriMatcher.addURI(AUTHORITY, Post.TABLE_NAME+"/*", POSTS_PER_USER_ID);
     }
 
     public static final class Post implements BaseColumns {
 
-        public static final Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"/"+PostTable.TABLE_NAME);
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.pichannel.post";
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.pichannel.post";
+        public static final Uri CONTENT_URI =
+                Uri.parse("content://"+AUTHORITY+"/"+PostTable.TABLE_NAME);
+
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.tk.pichannel.provider.post";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.tk.pichannel.provider.post";
 
         public static final String TABLE_NAME = PostTable.TABLE_NAME;
         public static final String ID = PostTable.COLUMN_ID;
@@ -72,20 +73,27 @@ public class PichannelContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sort) {
         SQLiteQueryBuilder queryBuilder=new SQLiteQueryBuilder();
 //      TODO  checkColumns(projection);
-        queryBuilder.setTables(Post.TABLE_NAME);
 
-        switch (uriMatcher.match(uri)) {
 
+        switch (sUriMatcher.match(uri)) {
+
+//            get all posts
             case POSTS:
+
+                queryBuilder.setTables(Post.TABLE_NAME);
                 break;
 
+
+//            get someone's posts
             case POSTS_PER_USER_ID:
-                queryBuilder.appendWhere(PostTable.COLUMN_USER_ID + "="
-                        + uri.getLastPathSegment());
+
+                queryBuilder.setTables(Post.TABLE_NAME);
+                queryBuilder.appendWhere(PostTable.COLUMN_USER_ID + "='"
+                        + uri.getLastPathSegment()+"'");
                 break;
 
             default:
-                throw new IllegalArgumentException("Unknown URI: "+uri);
+                throw new IllegalArgumentException("Unsupported URI for query: "+uri);
         }
 
 
@@ -109,7 +117,20 @@ public class PichannelContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(Uri uri) {
-        return null;
+
+        switch (sUriMatcher.match(uri)) {
+
+            // multiple rows
+            case POSTS:
+                return Post.CONTENT_TYPE;
+
+            // multiple rows
+            case POSTS_PER_USER_ID:
+                return Post.CONTENT_TYPE;
+
+            default:
+                throw new IllegalArgumentException("Unsupported URI for type: "+uri);
+        }
     }
 
     /**
@@ -123,23 +144,38 @@ public class PichannelContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
 
-        Log.i(TAG,"insert start");
+        switch (sUriMatcher.match(uri)) {
 
-        long rowID=
-                pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict(
-                        PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            case POSTS:
+                long rowID=
+                        pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict(
+                                PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 
-        if (rowID > 0) {
-            Uri insertedRowUri=
-                    ContentUris.withAppendedId(PichannelContentProvider.Post.CONTENT_URI,
-                            rowID);
-            getContext().getContentResolver().notifyChange(insertedRowUri, null);
+                if (rowID > 0) {
 
-            return(insertedRowUri);
+                    Uri insertedRowUri=
+                            ContentUris.withAppendedId(PichannelContentProvider.Post.CONTENT_URI,
+                                    rowID);
+
+                    getContext().getContentResolver().notifyChange(insertedRowUri, null);
+
+                    return(insertedRowUri);
+                }
+                else {
+                    return uri;
+                }
+
+            case POSTS_PER_USER_ID:
+                throw new IllegalArgumentException("Unsupported URI for insert: "+uri);
+
+            default:
+                throw new IllegalArgumentException("Unsupported URI for insert: "+uri);
         }
 
 
-        return uri;
+
+
+
     }
 
     @Override

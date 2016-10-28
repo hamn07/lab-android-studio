@@ -30,7 +30,7 @@ import tk.pichannel.viewer.data.PichannelContentProvider;
  * Static helper methods for working with the sync framework.
  */
 public class SyncUtils {
-    private static final long SYNC_FREQUENCY = 60;  // 1 min (in seconds)
+    private static final long SYNC_FREQUENCY = 60 * 60;  // 1 hour (in seconds)
     private static final String CONTENT_AUTHORITY = PichannelContentProvider.AUTHORITY;
 //    private static final String PREF_SETUP_COMPLETE = "setup_complete";
 

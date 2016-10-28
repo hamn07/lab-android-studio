@@ -2,6 +2,7 @@ package tk.pichannel.viewer.data;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
@@ -33,12 +34,13 @@ public class PichannelContentProviderTest {
     @Test
     public void insertionOfPostTable() {
 
+        Uri uri = PichannelContentProvider.Post.CONTENT_URI.buildUpon().appendPath(Stub.USER_ID).build();
         String[] projection = {PostTable.COLUMN_IMAGE_FILE_NAME};
-        String selection = "id=? AND user_id=?";
-        String[] selectionArgs = {Stub.ID,Stub.USER_ID};
+        String selection = "id=?";
+        String[] selectionArgs = {Stub.ID};
 
         Cursor cursor = InstrumentationRegistry.getTargetContext().getContentResolver().query(
-                PichannelContentProvider.Post.CONTENT_URI,projection,selection,selectionArgs,null);
+                uri, projection, selection, selectionArgs, null);
 
         int columnIndex_ImageFileName   = cursor.getColumnIndex(PostTable.COLUMN_IMAGE_FILE_NAME);
 
