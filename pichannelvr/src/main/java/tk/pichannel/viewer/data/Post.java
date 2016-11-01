@@ -85,6 +85,11 @@ public class Post {
             return this;
         }
 
+        public Builder imageFileName(String imageFileName) {
+            this.imageFileName = imageFileName;
+            return this;
+        }
+
         public Builder text(String text) {
             this.text = text;
             return this;

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/frameLayout"
     >
-    <!--android:background="@drawable/background"-->
+
     <ImageView
         android:id="@+id/iv"
         android:layout_width="match_parent"
@@ -17,24 +17,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="30sp"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:text="description"
-        />
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal|bottom"-->
-        <!--android:layout_marginBottom="30sp"-->
-        <!--android:textSize="30sp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:text="description"-->
-        <!--android:shadowDx="0"-->
-        <!--android:shadowDy="0"-->
-        <!--android:shadowRadius="50"-->
-        <!--android:shadowColor="#7777ff" />-->
-
+        android:shadowColor="@color/DarkGrey"
+        android:shadowRadius="5"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
 </FrameLayout>

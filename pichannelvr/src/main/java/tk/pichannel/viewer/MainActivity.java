@@ -21,19 +21,23 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import tk.pichannel.viewer.player.MusicPlayer;
+import tk.pichannel.viewer.player.SlidesPlayer;
 import tk.pichannel.viewer.sync.SyncUtils;
 
 
 public class MainActivity extends Activity {
 
-    private ImageView iv;
+//    private ImageView iv;
     private TextView tv;
-    private ImageViewSwitchHandler handler;
-    private ServiceBroadcastReceiver receiver;
+//    private ImageViewSwitchHandler handler;
+//    private ServiceBroadcastReceiver receiver;
     private ProgressDialog dialog;
     private Animation scaleAnimation;
     private FrameLayout frameLayout;
-    Account mAccount;
+    private SlidesPlayer mSlidePlayer;
+    private MusicPlayer mMusicPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +45,24 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //-- instantiate member
-        handler = new ImageViewSwitchHandler();
-        iv = (ImageView) findViewById(R.id.iv);
+//        handler = new ImageViewSwitchHandler();
+//        iv = (ImageView) findViewById(R.id.iv);
         tv = (TextView) findViewById(R.id.tv);
         frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
         scaleAnimation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale);
         dialog = new ProgressDialog(this);
 
         // 註冊Receiver
-        receiver = new ServiceBroadcastReceiver();
-        registerReceiver(receiver, new IntentFilter("nextImageLoaded"));
+//        receiver = new ServiceBroadcastReceiver();
+//        registerReceiver(receiver, new IntentFilter("nextImageLoaded"));
 
         SyncUtils.CreateSyncAccount(this);
+
+        // SlidePlayer initialization
+        mSlidePlayer = new SlidesPlayer(this, MainActivity.this);
+
+        // MusicPlayer initialization
+        mMusicPlayer = new MusicPlayer(this);
     }
 
     @Override
@@ -60,56 +70,59 @@ public class MainActivity extends Activity {
         super.onStart();
 
         // 啟動服務
-        startService(new Intent(this, MainService.class));
+//        startService(new Intent(this, MainService.class));
         //startService(new Intent(this, BackgroundService.class));
+        mSlidePlayer.prepare();
+        mSlidePlayer.start();
 
+        mMusicPlayer.prepare();
+        mMusicPlayer.start();
 
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading...");
-        dialog.show();
+//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        dialog.setMessage("Loading...");
+//        dialog.show();
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        stopService(new Intent(this, MainService.class));
+        mSlidePlayer.destroy();
+        mMusicPlayer.destroy();
+//        stopService(new Intent(this, MainService.class));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
     }
 
-    private class ImageViewSwitchHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
+//    private class ImageViewSwitchHandler extends Handler {
+//        @Override
+//        public void handleMessage(Message msg) {
+//
+//            if (dialog.isShowing()){
+//                dialog.dismiss();
+//            }
+//
+//
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//            Bitmap bitmap = BitmapFactory.decodeFile(getFilesDir().getAbsolutePath()+"/cache-image.jpg", options);
+//
+//            iv.setImageBitmap(bitmap);
+//            iv.startAnimation(scaleAnimation);
+//
+//        }
+//    }
 
-            if (dialog.isShowing()){
-                dialog.dismiss();
-            }
-
-//            Log.i("henry", "handle");
-
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(getFilesDir().getAbsolutePath()+"/cache-image.jpg", options);
-
-            iv.setImageBitmap(bitmap);
-//            frameLayout.startAnimation(scaleAnimation);
-            iv.startAnimation(scaleAnimation);
-
-        }
-    }
-
-    private class ServiceBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-//            Log.i("henry","onReceive");
-
-            handler.sendEmptyMessage(0);
-        }
-    }
+//    private class ServiceBroadcastReceiver extends BroadcastReceiver {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//
+//            handler.sendEmptyMessage(0);
+//        }
+//    }
 }
