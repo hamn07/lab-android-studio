@@ -7,12 +7,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -21,12 +25,14 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import tk.pichannel.viewer.data.PichannelContentProvider;
 import tk.pichannel.viewer.player.MusicPlayer;
 import tk.pichannel.viewer.player.SlidesPlayer;
 import tk.pichannel.viewer.sync.SyncUtils;
 
 
 public class MainActivity extends Activity {
+    private final String TAG = "MainActivity";
 
 //    private ImageView iv;
     private TextView tv;
@@ -37,6 +43,7 @@ public class MainActivity extends Activity {
     private FrameLayout frameLayout;
     private SlidesPlayer mSlidePlayer;
     private MusicPlayer mMusicPlayer;
+    private ContentObserver mContentObserver;
 
 
     @Override
@@ -63,6 +70,21 @@ public class MainActivity extends Activity {
 
         // MusicPlayer initialization
         mMusicPlayer = new MusicPlayer(this);
+
+        // Register Content Observer
+        mContentObserver = new ContentObserver(new Handler(Looper.getMainLooper())) {
+            @Override
+            public void onChange(boolean selfChange) {
+
+                Log.i(TAG, "((notify change, restart slides!))");
+
+                mSlidePlayer.destroy();
+                mSlidePlayer.prepare();
+                mSlidePlayer.start();
+            }
+        };
+
+        getContentResolver().registerContentObserver(PichannelContentProvider.Post.CONTENT_URI, false, mContentObserver);
     }
 
     @Override
@@ -95,6 +117,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        getContentResolver().unregisterContentObserver(mContentObserver);
+
 //        unregisterReceiver(receiver);
     }
 

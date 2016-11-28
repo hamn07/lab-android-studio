@@ -6,6 +6,8 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -147,9 +149,23 @@ public class PichannelContentProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
 
             case POSTS:
-                long rowID=
+//                long rowID=
+//                        pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict(
+//                                PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                long rowID=0;
+
+                try {
+                    rowID = pichannelDbOpenHelper.getWritableDatabase().insertOrThrow(
+                                     PostTable.TABLE_NAME, null, contentValues);
+
+                } catch (SQLException e) {
+
+                    if (e instanceof SQLiteConstraintException)
                         pichannelDbOpenHelper.getWritableDatabase().insertWithOnConflict(
                                 PostTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+                    else
+                        e.printStackTrace();
+                }
 
                 if (rowID > 0) {
 

@@ -30,7 +30,7 @@ import tk.pichannel.viewer.data.PichannelContentProvider;
  * Static helper methods for working with the sync framework.
  */
 public class SyncUtils {
-    private static final long SYNC_FREQUENCY = 60 * 60;  // 1 hour (in seconds)
+    private static final long SYNC_FREQUENCY = 60;  // 1 hour (in seconds)
     private static final String CONTENT_AUTHORITY = PichannelContentProvider.AUTHORITY;
 //    private static final String PREF_SETUP_COMPLETE = "setup_complete";
 
@@ -56,7 +56,18 @@ public class SyncUtils {
 
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
-        if (accountManager.addAccountExplicitly(account, null, null)) {
+
+        accountManager.addAccountExplicitly(account, null, null);
+        // Inform the system that this account supports sync
+        ContentResolver.setIsSyncable(account, CONTENT_AUTHORITY, 1);
+        // Inform the system that this account is eligible for auto sync when the network is up
+        ContentResolver.setSyncAutomatically(account, CONTENT_AUTHORITY, true);
+        // Recommend a schedule for automatic synchronization. The system may modify this based
+        // on other scheduled syncs and network utilization.
+        ContentResolver.addPeriodicSync(
+                account, CONTENT_AUTHORITY, new Bundle(),SYNC_FREQUENCY);
+
+/*        if (accountManager.addAccountExplicitly(account, null, null)) {
             // Inform the system that this account supports sync
             ContentResolver.setIsSyncable(account, CONTENT_AUTHORITY, 1);
             // Inform the system that this account is eligible for auto sync when the network is up
@@ -66,7 +77,7 @@ public class SyncUtils {
             ContentResolver.addPeriodicSync(
                     account, CONTENT_AUTHORITY, new Bundle(),SYNC_FREQUENCY);
 //            newAccount = true;
-        }
+        }*/
 
         // Schedule an initial sync if we detect problems with either our account or our local
         // data has been deleted. (Note that it's possible to clear app data WITHOUT affecting

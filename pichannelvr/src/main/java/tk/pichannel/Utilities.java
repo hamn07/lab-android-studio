@@ -5,6 +5,8 @@ package tk.pichannel;
 
 import android.content.Context;
 
+import org.json.JSONArray;
+
 import java.io.File;
 
 public class Utilities {

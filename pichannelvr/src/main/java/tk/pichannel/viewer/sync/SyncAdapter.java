@@ -5,42 +5,34 @@ import android.annotation.TargetApi;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentProviderOperation;
-import android.content.ContentProviderResult;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
 import android.content.SyncResult;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-import tk.pichannel.Utilities;
 import tk.pichannel.viewer.BuildConfig;
-import tk.pichannel.viewer.MainSingleton;
 import tk.pichannel.viewer.data.PichannelContentProvider;
 import tk.pichannel.viewer.data.Post;
-import tk.pichannel.viewer.data.PostTable;
+
+import static tk.pichannel.Utilities.fileExists;
 
 /**
  * Created by HamnLee on 2016/10/20.
@@ -66,23 +58,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int NET_READ_TIMEOUT_MILLIS = 10000;  // 10 seconds
 
     /**
-     * Content resolver, for performing database operations.
+     * Content resolver, for performing database insertOperations.
      */
     private final ContentResolver mContentResolver;
 
-    private final RequestQueue mRequestQueue;
-
-    /**
-     * Project used when querying content provider. Returns all known fields.
-     */
-    private static final String[] PROJECTION = new String[] {
-            PichannelContentProvider.Post._ID,
-            PichannelContentProvider.Post.ID,
-            PichannelContentProvider.Post.POST_UNIXTIMESTAMP_ORIGINAL,
-            PichannelContentProvider.Post.USER_ID,
-            PichannelContentProvider.Post.IMAGE_FILE_NAME,
-            PichannelContentProvider.Post.TEXT,
-    };
+    private boolean mHasNewImageFileDownloaded;
 
     /**
      * Set up the sync adapter
@@ -95,7 +75,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
          * from the incoming Context
          */
         mContentResolver = context.getContentResolver();
-        mRequestQueue = MainSingleton.getInstance(context).getRequestQueue();
     }
 
     /**
@@ -105,7 +84,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
         mContentResolver = context.getContentResolver();
-        mRequestQueue = MainSingleton.getInstance(context).getRequestQueue();
     }
 
     /**
@@ -127,172 +105,173 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority,
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.i(TAG, "Beginning network synchronization");
+        mHasNewImageFileDownloaded = false;
 
-        downloadPosts_jsonArray(new IVolleyCallback() {
+        try {
 
-            @Override
-            public void onSuccessResponse(JSONArray response) {
-                synchronizeLocalPostData(response);
+            JSONArray posts_jsonArray = downloadPostsData_asJsonArray(new URL(FEED_POSTS_URL));
+
+            new PostsDataSynchronizer().syncDatabaseAndFiles(posts_jsonArray);
+
+            if (mHasNewImageFileDownloaded) {
+                mContentResolver.notifyChange(PichannelContentProvider.Post.CONTENT_URI, null, false);
             }
-        });
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void synchronizeLocalPostData(JSONArray posts_jsonArray) {
+    private JSONArray downloadPostsData_asJsonArray(URL url) throws JSONException, IOException {
 
-        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+        BufferedReader reader = null;
+        HttpURLConnection conn = null;
 
-        for (int i=0;i<posts_jsonArray.length();i++) {
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"utf-8"));
+
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
+            }
+            String json = sb.toString();
+
+            return new JSONArray(json);
+
+
+
+        } finally {
+            conn.disconnect();
+            if (null != reader) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.e(TAG, "JSON feed closed", e);
+                }
+            }
+        }
+    }
+
+    private class PostsDataSynchronizer {
+
+        private static final int BUFFER_SIZE = 1024;
+        ArrayList<ContentProviderOperation> insertOperations = new ArrayList<>();
+
+        public void syncDatabaseAndFiles(JSONArray posts_jsonArray) {
+
+            for (int i=0;i<posts_jsonArray.length();i++) {
+
+                try {
+                    JSONObject post_jsonObject = posts_jsonArray.getJSONObject(i);
+
+                    final Post post = new Post.Builder()
+                            .id(post_jsonObject.getString("id"))
+                            .postUnixtimestampeOriginal(post_jsonObject.getString("post_time"))
+                            .userId("hamn07")
+                            .imageSrc(post_jsonObject.getString("image_src"))
+                            .text(post_jsonObject.getString("text"))
+                            .build();
+
+
+                    if (fileExists(getContext(), post.getImageFileName())) {
+                        addInsertOperation(post);
+                    }
+                    else {
+                        Log.i(TAG,"((post content))"+post.toString());
+
+                        downloadImageFile(post);
+                        addInsertOperation(post);
+                        mHasNewImageFileDownloaded = true;
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
 
             try {
-                JSONObject post_jsonObject = posts_jsonArray.getJSONObject(i);
 
-                Post post = new Post.Builder()
-                        .id(post_jsonObject.getString("id"))
-                        .postUnixtimestampeOriginal(post_jsonObject.getString("post_time"))
-                        .userId("hamn07")
-                        .imageSrc(post_jsonObject.getString("image_src"))
-                        .text(post_jsonObject.getString("text"))
-                        .build();
+                mContentResolver.applyBatch(PichannelContentProvider.AUTHORITY, insertOperations);
 
-                Log.i(TAG, "((id)) = "+post_jsonObject.getInt(PichannelContentProvider.Post.ID));
-
-                downloadImageFileIfNotExists(post);
-
-                updatePostTable(post);
-
-
-//                operations.add(
-//                        ContentProviderOperation.newInsert(PichannelContentProvider.Post.CONTENT_URI)
-//                                .withValue(PichannelContentProvider.Post.ID, post_jsonObject.get("id"))
-//                                .withValue(PichannelContentProvider.Post.POST_UNIXTIMESTAMP_ORIGINAL, post_jsonObject.get("post_time"))
-//                                .withValue(PichannelContentProvider.Post.USER_ID, "hamn07")
-//                                .withValue(PichannelContentProvider.Post.IMAGE_FILE_NAME, Utilities.getImageFileNameAsStringByURL(post_jsonObject.getString("image_src")))
-//                                .withValue(PichannelContentProvider.Post.TEXT, post_jsonObject.getString("text"))
-//                                .build());
-
-
-            } catch (JSONException e) {
+            } catch (RemoteException | OperationApplicationException e) {
                 e.printStackTrace();
             }
         }
 
+        private void downloadImageFile(Post post) {
+
+            URL url = null;
+            try {
+                url = new URL(post.getImageSrc());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
 
 
-//        try {
-//
-//            Log.i(TAG,"((apply batch))");
-//            ContentProviderResult[] results = mContentResolver.applyBatch(PichannelContentProvider.AUTHORITY, operations);
-//
-//            Log.i(TAG,"((results_length))"+results);
-//
-//            for (ContentProviderResult result:results) {
-//                if (result.count > 0) {
-//                    Log.i(TAG,"insert successfully!");
-//                }
-//                else
-//                {
-//                    Log.i(TAG,"CONFLICT_IGNORE");
-//                }
-//            }
-//
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        } catch (OperationApplicationException e) {
-//            e.printStackTrace();
-//        }
+            HttpURLConnection conn = null;
+            try {
+                conn = (HttpURLConnection) url.openConnection();
+
+                InputStream in = null;
+                FileOutputStream out = null;
+
+                try {
 
 
+                    if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        in = conn.getInputStream();
 
+                        out = getContext().openFileOutput(post.getImageFileName(), Context.MODE_PRIVATE);
 
-
-
-    }
-
-    private void updatePostTable(Post post) {
-
-        ContentValues cv = new ContentValues();
-        cv.put(PostTable.COLUMN_ID,post.getId());
-        cv.put(PostTable.COLUMN_POST_UNIXTIMESTAMP_ORIGINAL,post.getPostUnixtimestampeOriginal());
-        cv.put(PostTable.COLUMN_USER_ID, post.getUserId());
-        cv.put(PostTable.COLUMN_IMAGE_FILE_NAME, post.getImageFileName());
-        cv.put(PostTable.COLUMN_TEXT, post.getText());
-
-        mContentResolver.insert(PichannelContentProvider.Post.CONTENT_URI,cv);
-    }
-
-    private void downloadImageFileIfNotExists(final Post post) {
-
-        if (Utilities.fileExists(getContext(),post.getImageFileName()))
-            return;
-
-
-        int maxWidth=0;
-        int maxHeight=0;
-        ImageView.ScaleType scaleType=null;
-        Bitmap.Config decodeConfig=null;
-
-        ImageRequest imageRequest = new ImageRequest(post.getImageSrc(),
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap response) {
-
-                        FileOutputStream fOut = null;
-
-                        try {
-
-                            fOut = getContext().openFileOutput(post.getImageFileName(), Context.MODE_PRIVATE);
-                            response.compress(Bitmap.CompressFormat.JPEG,85,fOut);
-                            fOut.flush();
-
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-
-                        } finally {
-                            try {
-
-                                if (fOut!=null) {
-                                    fOut.close();
-                                }
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        int bytesRead;
+                        byte[] buffer = new byte[BUFFER_SIZE];
+                        while ((bytesRead = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, bytesRead);
                         }
 
+                        out.close();
+                        in.close();
                     }
-                }, maxWidth, maxHeight, scaleType, decodeConfig,
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                    conn.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (out != null){
+                        out.close();
                     }
-                });
+                    if (in != null) {
+                        in.close();
+                    }
+                }
 
-        mRequestQueue.add(imageRequest);
-    }
-
-
-    private void downloadPosts_jsonArray(final IVolleyCallback callback) {
-
-        JsonArrayRequest posts_jsonArray_request = new JsonArrayRequest
-                (Request.Method.GET, FEED_POSTS_URL, null, new Response.Listener<JSONArray>() {
-
-            @Override
-            public void onResponse(JSONArray response) {
-                callback.onSuccessResponse(response);
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), e + "error", Toast.LENGTH_LONG).show();
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
             }
-        });
+        }
 
-        mRequestQueue.add(posts_jsonArray_request);
+        private void addInsertOperation(Post post) {
+
+            insertOperations.add(
+                    ContentProviderOperation.newInsert(PichannelContentProvider.Post.CONTENT_URI)
+                            .withValue(PichannelContentProvider.Post.ID, post.getId())
+                            .withValue(PichannelContentProvider.Post.POST_UNIXTIMESTAMP_ORIGINAL, post.getPostUnixtimestampeOriginal())
+                            .withValue(PichannelContentProvider.Post.USER_ID, post.getUserId())
+                            .withValue(PichannelContentProvider.Post.IMAGE_FILE_NAME, post.getImageFileName())
+                            .withValue(PichannelContentProvider.Post.TEXT, post.getText())
+                            .build());
+        }
     }
 }

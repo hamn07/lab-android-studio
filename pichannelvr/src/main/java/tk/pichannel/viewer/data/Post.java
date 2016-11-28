@@ -49,6 +49,10 @@ public class Post {
         return text;
     }
 
+    @Override
+    public String toString() {
+        return "post content: id="+id+", user_id="+userId+", image_src="+imageSrc+", text="+text+", imageFileName="+imageFileName;
+    }
 
     public static class Builder {
 
@@ -94,5 +98,6 @@ public class Post {
             this.text = text;
             return this;
         }
+
     }
 }
